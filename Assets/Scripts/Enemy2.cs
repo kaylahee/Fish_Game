@@ -5,37 +5,45 @@ using UnityEngine;
 public class Enemy2 : MonoBehaviour
 {
     [SerializeField]
-    private int damage = 1;
+    private int damage2 = 3;
     [SerializeField]
-    private int scorePoint = 100;
+    private int scorePoint_2 = 50;
+    private int scorePoint2 = 100;
     private PlayerController playerController;
-    private int getHP = 3;
+    public float currentHP;
     private PlayerHP playerHP;
 
     private void Awake()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        if (scorePoint >= 1000)
-        {
-            playerHP.CurrentHP += getHP;
-        }
-
-        OnDie();
-    }
-
-    public void OnDie()
-    {
-        playerController.Score += scorePoint;
-        Destroy(gameObject);
+        playerHP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHP>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<PlayerHP>().TakeDamage(damage);
-            Destroy(gameObject);
+            if (playerController.Score < 1000)
+            {
+                collision.GetComponent<PlayerHP>().TakeDamage(damage2);
+                playerController.Score -= scorePoint_2;
+                Destroy(gameObject);
+            }
+            else
+            {
+                OnDie();
+            }
         }
+    }
+
+    public void OnDie()
+    {
+        if (playerController.Score >= 1000)
+        {
+            playerController.Score += scorePoint2;
+            playerHP.IncreaseHp(25);
+        }
+        Destroy(gameObject);
     }
 }
     

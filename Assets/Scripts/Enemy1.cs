@@ -5,21 +5,23 @@ using UnityEngine;
 public class Enemy1 : MonoBehaviour
 {
     [SerializeField]
-    private int scorePoint = 100;
+    private int scorePoint1 = 50;
     private PlayerController playerController;
-    private int getHP = 1;
-    private PlayerHP playerHP;  
+    public float currentHP;
+    private PlayerHP playerHP;
 
     private void Awake()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        PlayerHP.CurrentHP += getHP;
+        playerHP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHP>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
+            playerController.Score += scorePoint1;
+            playerHP.IncreaseHp(1);
             Destroy(gameObject);
         }
     }
