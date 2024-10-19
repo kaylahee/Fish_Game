@@ -23,10 +23,10 @@ public class Enemy3 : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (playerController.Score < 5000)
+            if (playerController.score < 5000)
             {
                 collision.GetComponent<PlayerHP>().TakeDamage(damage3);
-                playerController.Score -= scorePoint_3;
+                playerController.score -= scorePoint_3;
                 Destroy(gameObject);
             }
             else
@@ -37,9 +37,9 @@ public class Enemy3 : MonoBehaviour
     }
     public void OnDie()
     {
-        if (playerController.Score >= 5000)
+        if (playerController.score >= 5000)
         {
-            playerController.Score += scorePoint3;
+            playerController.score += scorePoint3;
             playerHP.IncreaseHp(50);
         }
         Destroy(gameObject);

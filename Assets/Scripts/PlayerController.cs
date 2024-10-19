@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,30 +8,44 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private string nextSceneName;
+
     [SerializeField]
     private StageData stageData;
     private Movement2D movement2D;
 
-    private int score;
-    public int Score
-    {
-        set => score = Mathf.Max(0, value);
-        get => score;
-    }
+    public float moveSpeed = 5.0f;
+    public Vector3 moveDirection = Vector3.zero;
+
+    public int score;
+
+    private SpriteRenderer currentImage;
+    public Sprite Level1Image;
+    public Sprite Level2Image;
 
     private void Awake()
     {
-        movement2D = GetComponent<Movement2D>();
+        currentImage = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     private void Update()
     {
         // 방향 키를 눌러 이동 방향 설정
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
-        movement2D.MoveTo(new Vector3(x, y, 0));
+        Vector3 direction = new Vector3(horizontal, vertical, 0);
+        transform.position += direction * moveSpeed * Time.deltaTime;
+
+        if (score == 100)
+        {
+            currentImage.sprite = Level1Image;
+        }
+
+        if (score == 200)
+        {
+            currentImage.sprite = Level2Image;
+        }
     }
 
     private void LateUpdate()
