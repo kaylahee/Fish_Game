@@ -53,16 +53,6 @@ public class PlayerController : MonoBehaviour
 
         Vector3 direction = new Vector3(userInputH, userInputV, 0);
         transform.Translate(direction * speed * Time.deltaTime);
-
-        // 카메라 화면 밖으로 이동 제한
-        Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
-
-        if (userInputV < 0f) position.x = 0f;
-        if (userInputV > 0f) position.x = 1f;
-        if (userInputH < 0f) position.y = 0f;
-        if (userInputH > 0f) position.y = 0f;
-
-        //transform.position = Camera.main.ViewportToWorldPoint(pos)
     }
 
 
@@ -71,9 +61,9 @@ public class PlayerController : MonoBehaviour
         // 플레이어 캐릭터가 화면 범위 바깥으로 나가지 못하도록 함
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x, stageData.LimitMax.x),
             Mathf.Clamp(transform.position.y, stageData.LimitMin.y, stageData.LimitMax.y));
-    }
+    }*/
 
-    public void OnDie()
+    /*public void OnDie()
     {
         PlayerPrefs.SetInt("Score", score);
         SceneManager.LoadScene(nextSceneName);
