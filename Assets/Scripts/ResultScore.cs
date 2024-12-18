@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -14,3 +14,4 @@ public class ResultScore : MonoBehaviour
         textResultScore.text = "Result Score" + score;
     }
 }
+*/

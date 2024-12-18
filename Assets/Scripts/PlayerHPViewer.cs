@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,3 +19,4 @@ public class PlayerHPViewer : MonoBehaviour
         sliderHP.value = playerHP.CurrentHP / playerHP.MaxHP;
     }
 }
+*/
