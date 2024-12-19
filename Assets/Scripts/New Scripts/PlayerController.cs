@@ -5,27 +5,31 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    /*[SerializeField]
+	/*[SerializeField]
     private string nextSceneName;*/
 
-    /*[SerializeField]
+	/*[SerializeField]
     private StageData stageData;
     private Movement2D movement2D;*/
 
-    /*private int score;
+	/*private int score;
     public int Score
     {
         set => score = Mathf.Max(0, value);
         get => score;
     }*/
 
-    private Transform _transformY;
+	private Transform _transformY;
     private Transform _transformX;
 
     private Vector2 _currentPosY;
     private Vector2 _currentPosX;
 
     private float speed = 5f;
+
+    public RectTransform front;
+    private float _maxHp = 10f;
+    private float _curHp = 10f;
 
     /*private void Awake()
     {
@@ -55,15 +59,32 @@ public class PlayerController : MonoBehaviour
         transform.Translate(direction * speed * Time.deltaTime);
     }
 
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.CompareTag("Feed"))
+		{
+			Debug.Log("Eat Feed");
+			Destroy(collision.gameObject);
+            _curHp += 1f;
+			front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
+		}
 
-    /*private void LateUpdate()
+        if (collision.CompareTag("Fishing"))
+        {
+            Debug.Log("Fishing");
+            _curHp -= 1f;
+            front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
+        }
+	}
+
+	/*private void LateUpdate()
     {
         // 플레이어 캐릭터가 화면 범위 바깥으로 나가지 못하도록 함
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x, stageData.LimitMax.x),
             Mathf.Clamp(transform.position.y, stageData.LimitMin.y, stageData.LimitMax.y));
     }*/
 
-    /*public void OnDie()
+	/*public void OnDie()
     {
         PlayerPrefs.SetInt("Score", score);
         SceneManager.LoadScene(nextSceneName);
