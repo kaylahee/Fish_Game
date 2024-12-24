@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,15 +22,18 @@ public class PlayerController : MonoBehaviour
         get => score;
     }*/
 
-	private Transform _transformY;
+	/*private Transform _transformY;
     private Transform _transformX;
 
     private Vector2 _currentPosY;
-    private Vector2 _currentPosX;
+    private Vector2 _currentPosX;*/
 
+    [SerializeField]
+    private GameObject fish;
     private float speed = 5f;
-    // 이동가능한 범위
-    private Vector2 p_moveLimit = new Vector2(4.0f, 4.0f);
+
+	// 이동가능한 범위
+	private Vector2 p_moveLimit = new Vector2(4.0f, 4.0f);
     [SerializeField]
     private GameObject region;
 
@@ -49,8 +55,11 @@ public class PlayerController : MonoBehaviour
 
 	private void Start()
     {
-        cur_player = GetComponent<SpriteRenderer>();
-    }
+        cur_player = GetComponentInChildren<SpriteRenderer>();
+
+		hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
+		score_front.localScale = new Vector3(_curScore / _maxScore, 1.0f, 1.0f);
+	}
 
     // Update is called once per frame
     private void Update()
@@ -67,9 +76,53 @@ public class PlayerController : MonoBehaviour
         // 수평 이동
         float userInputH = Input.GetAxis("Horizontal");
 
-        Vector3 direction = new Vector3(-userInputH, userInputV, 0);
-        transform.Translate(direction * speed * Time.deltaTime);
-        //transform.localPosition = ClampPosition(transform.localPosition);
+		Vector3 direction = new Vector3(userInputH, userInputV, 0);
+
+        if (!(userInputV == 0 && userInputH == 0))
+        {
+            // 이동
+            transform.position += direction * speed * Time.deltaTime;
+            //transform.Translate(direction * speed * Time.deltaTime);
+
+			if (userInputH < 0f)
+			{
+				fish.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+				// 3사분면
+				if (userInputV < 0f)
+				{
+					fish.transform.rotation = Quaternion.Euler(0, 0, 45);
+				}
+				// 2사분면
+				else if (userInputV > 0f)
+				{
+					fish.transform.rotation = Quaternion.Euler(0, 0, -45);
+				}
+			}
+			else if (userInputH > 0f)
+			{
+				fish.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+				// 4사분면
+				if (userInputV < 0f)
+				{
+					fish.transform.rotation = Quaternion.Euler(0, 180, 45);
+				}
+				// 1사분면
+				else if (userInputV > 0f)
+				{
+					fish.transform.rotation = Quaternion.Euler(0, 180, -45);
+				}
+			}
+			else if (userInputV < 0f)
+			{
+				fish.transform.rotation = Quaternion.Euler(0, 0, 90);
+			}
+			else if (userInputV > 0f)
+			{
+				fish.transform.rotation = Quaternion.Euler(0, 0, -90);
+			}
+		}
 
         Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
 
@@ -81,19 +134,13 @@ public class PlayerController : MonoBehaviour
         transform.position = Camera.main.ViewportToWorldPoint(position);
     }
 
-    /*private Vector3 ClampPosition(Vector3 pos)
-    {
-        return new Vector3
-        (
-            // 좌우로 움직이는 이동범위
-            Mathf.Clamp(pos.x, -p_moveLimit.x, p_moveLimit.x),
-			Mathf.Clamp(pos.y, -p_moveLimit.y, p_moveLimit.y),
-            0
-		);
-    }*/
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		if (!collision.CompareTag("Sea"))
+		{
+			transform.position = Vector3.zero;
+		}
 		if (collision.CompareTag("Feed"))
 		{
 			Debug.Log(_curScore);

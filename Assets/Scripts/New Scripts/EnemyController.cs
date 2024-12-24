@@ -13,13 +13,18 @@ public class EnemyController : MonoBehaviour
 	[SerializeField]
 	private StageData stageData;*/
 
+	private Rigidbody2D rg;
 	private PlayerController playerController;
 
 	public float moveSpeed = 1.0f;
 
+	public bool moveLeft = false;
+	public bool moveRight = false;
+
 	// Start is called before the first frame update
 	void Start()
 	{
+		rg = GetComponent<Rigidbody2D>();
 		//playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 	}
 
@@ -40,6 +45,18 @@ public class EnemyController : MonoBehaviour
 		if (transform.position.y > 3.5f)
 		{
 			transform.position += Vector3.down * moveSpeed;
+		}
+	}
+
+	private void FixedUpdate()
+	{
+		if (transform.position.x >= 10f)
+		{
+			rg.velocity = new Vector2(-1, rg.velocity.x);
+		}
+		else if (transform.position.x <= -10f)
+		{
+			rg.velocity = new Vector2(1, rg.velocity.x);
 		}
 	}
 
