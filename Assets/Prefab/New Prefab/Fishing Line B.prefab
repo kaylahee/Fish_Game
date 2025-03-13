@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4680766268071303751}
   m_Layer: 0
   m_Name: Fishing Line B
-  m_TagString: Fishing
+  m_TagString: FishingShort
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,6 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.05
+  downSpeed: 0.3
+  enemyStage: 0
 --- !u!1 &8145839339116854433
 GameObject:
   m_ObjectHideFlags: 0

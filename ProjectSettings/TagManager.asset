@@ -10,7 +10,8 @@ TagManager:
   - Level0
   - Sea
   - Feed
-  - Fishing
+  - FishingShort
+  - FishingLong
   layers:
   - Default
   - TransparentFX

@@ -39,11 +39,11 @@ public class PlayerController : MonoBehaviour
 
 	public RectTransform hp_front;
     private float _maxHp = 10f;
-    private float _curHp = 10f;
+    public float _curHp = 10f;
 
 	public RectTransform score_front;
 	private float _maxScore = 9f;
-	private float _curScore = 0f;
+	public float _curScore = 0f;
 
 	private SpriteRenderer cur_player;
 	[SerializeField]
@@ -52,6 +52,12 @@ public class PlayerController : MonoBehaviour
 	public Sprite player2;
 
     private Transform p_transform;
+
+	public int playerstate = 0;
+	public int eatFeedCount = 0;
+	private bool isUnBeatTime;
+
+	EnemyController enemyController;
 
 	private void Start()
     {
@@ -126,45 +132,85 @@ public class PlayerController : MonoBehaviour
 
         Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
 
-        if (position.x < 0f) position.x = 0f;
-        if (position.x > 1f) position.x = 1f;
-        if (position.y < 0f) position.y = 0f;
-        if (position.y > 1f) position.y = 1f;
+		if (playerstate == 0)
+		{
+			if (position.x < 0.03f) position.x = 0.03f;
+			if (position.x > 0.97f) position.x = 0.97f;
+			if (position.y < 0.2f) position.y = 0.2f;
+			if (position.y > 0.8f) position.y = 0.8f;
+		}
 
-        transform.position = Camera.main.ViewportToWorldPoint(position);
+		if (playerstate == 1)
+		{
+			if (position.x < 0.07f) position.x = 0.07f;
+			if (position.x > 0.93f) position.x = 0.93f;
+			if (position.y < 0.2f) position.y = 0.2f;
+			if (position.y > 0.8f) position.y = 0.8f;
+		}
+
+		if (playerstate == 2)
+		{
+			if (position.x < 0.11f) position.x = 0.11f;
+			if (position.x > 0.89f) position.x = 0.89f;
+			if (position.y < 0.22f) position.y = 0.22f;
+			if (position.y > 0.78f) position.y = 0.78f;
+		}
+
+		transform.position = Camera.main.ViewportToWorldPoint(position);
     }
 
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (!collision.CompareTag("Sea"))
-		{
-			transform.position = Vector3.zero;
-		}
+		// ¸ÔÀÌ¿Í ´ê¾ÒÀ» °æ¿ì
 		if (collision.CompareTag("Feed"))
 		{
 			Debug.Log(_curScore);
-			Destroy(collision.gameObject);
-            _curScore += 1f;
+			//Destroy(collision.gameObject);
+
+			enemyController = collision.GetComponent<EnemyController>();
+
+			if (playerstate == 0 && enemyController.enemyStage > 0)
+			{
+				_curHp -= 20f;
+				isUnBeatTime = true;
+				StartCoroutine("UnBeatTime");
+			}
+			else if (playerstate == 1 && enemyController.enemyStage > 1)
+			{
+				_curHp -= 10f;
+				isUnBeatTime = true;
+				StartCoroutine("UnBeatTime");
+			}
+			else
+			{
+				_curScore += 1f;
+				eatFeedCount++;
+				Destroy(collision.gameObject);
+			}
+
 			hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
 			score_front.localScale = new Vector3(_curScore / _maxScore, 1.0f, 1.0f);
 
-            if (_curScore == 3)
+            if (eatFeedCount == 3)
             {
                 cur_player.sprite = player1;
                 transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+				playerstate = 1;
 			}
-            else if (_curScore == 5)
+            else if (eatFeedCount == 5)
             {
                 cur_player.sprite = player2;
-                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            }
+                transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+				playerstate = 2;
+			}
 		}
 
+		// ³¬½Ë´ë¿Í ´ê¾ÒÀ» °æ¿ì
         if (collision.CompareTag("Fishing"))
         {
             Debug.Log("Fishing");
-            _curHp -= 1f;
+            _curHp -= 0f;
 			hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
         }
 	}
@@ -181,4 +227,31 @@ public class PlayerController : MonoBehaviour
         PlayerPrefs.SetInt("Score", score);
         SceneManager.LoadScene(nextSceneName);
     }*/
+
+	IEnumerator UnBeatTime()
+	{
+		int countTime = 0;
+
+		while (countTime < 10)
+		{
+			if (countTime % 2 == 0)
+			{
+				cur_player.color = new Color32(255, 255, 255, 90);
+			}
+			else
+			{
+				cur_player.color = new Color32(255, 255, 255, 180);
+			}
+
+			yield return new WaitForSeconds(0.2f);
+
+			countTime++;
+		}
+
+		cur_player.color = new Color32(255, 255, 255, 255);
+
+		isUnBeatTime = false;
+
+		yield return null;
+	}
 }

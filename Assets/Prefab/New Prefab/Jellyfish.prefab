@@ -161,6 +161,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ea32123dc70bce45bee69f1158e5dad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  moveLeft: 0
-  moveRight: 0
+  enemyStage: 1
