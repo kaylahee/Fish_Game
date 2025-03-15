@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Move();
+		Move();
         /*movement2D.MoveTo(new Vector3(x, y, 0));*/
     }
 
@@ -159,14 +159,12 @@ public class PlayerController : MonoBehaviour
 		transform.position = Camera.main.ViewportToWorldPoint(position);
     }
 
-
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		// ¸ÔÀÌ¿Í ´ê¾ÒÀ» °æ¿ì
 		if (collision.CompareTag("Feed"))
 		{
 			Debug.Log(_curScore);
-			//Destroy(collision.gameObject);
 
 			enemyController = collision.GetComponent<EnemyController>();
 
@@ -174,13 +172,13 @@ public class PlayerController : MonoBehaviour
 			{
 				_curHp -= 20f;
 				isUnBeatTime = true;
-				StartCoroutine("UnBeatTime");
+				StartCoroutine(UnBeatTime());
 			}
 			else if (playerstate == 1 && enemyController.enemyStage > 1)
 			{
 				_curHp -= 10f;
 				isUnBeatTime = true;
-				StartCoroutine("UnBeatTime");
+				StartCoroutine(UnBeatTime());
 			}
 			else
 			{
@@ -192,6 +190,7 @@ public class PlayerController : MonoBehaviour
 			hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
 			score_front.localScale = new Vector3(_curScore / _maxScore, 1.0f, 1.0f);
 
+			// ÁøÈ­
             if (eatFeedCount == 3)
             {
                 cur_player.sprite = player1;
@@ -205,14 +204,6 @@ public class PlayerController : MonoBehaviour
 				playerstate = 2;
 			}
 		}
-
-		// ³¬½Ë´ë¿Í ´ê¾ÒÀ» °æ¿ì
-        if (collision.CompareTag("Fishing"))
-        {
-            Debug.Log("Fishing");
-            _curHp -= 0f;
-			hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
-        }
 	}
 
 	/*private void LateUpdate()

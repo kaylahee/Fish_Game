@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4288959743947303344}
   - component: {fileID: 4765364121842533284}
   - component: {fileID: 3158424997300676206}
-  - component: {fileID: 4680766268071303751}
+  - component: {fileID: 1072015857981181060}
   m_Layer: 0
   m_Name: Fishing Line B
   m_TagString: FishingShort
@@ -33,6 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 470758711561342329}
+  - {fileID: 4528055692299936321}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4765364121842533284
@@ -132,7 +133,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2379446, y: 2.6295514}
   m_EdgeRadius: 0
---- !u!114 &4680766268071303751
+--- !u!114 &1072015857981181060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,12 +142,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4591013175630602785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ea32123dc70bce45bee69f1158e5dad, type: 3}
+  m_Script: {fileID: 11500000, guid: e0be6999d0a49364ca1bfae3cb76b78f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.05
-  downSpeed: 0.3
-  enemyStage: 0
+  limitY: 3.25
 --- !u!1 &8145839339116854433
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,3 +213,34 @@ CapsuleCollider2D:
   m_Offset: {x: 0.03743726, y: 9.761047e-16}
   m_Size: {x: 0.5748733, y: 0.99999994}
   m_Direction: 0
+--- !u!1 &8410664687549317731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4528055692299936321}
+  m_Layer: 0
+  m_Name: CaughtFish
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4528055692299936321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410664687549317731}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.18, y: -1.3499997, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4288959743947303344}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

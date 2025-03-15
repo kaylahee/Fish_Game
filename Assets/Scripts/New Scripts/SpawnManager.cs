@@ -42,6 +42,7 @@ public class SpawnManager : MonoBehaviour
 	{
 		if (dn.isNight)
 		{
+			Debug.Log("Night");
 			StartCoroutine(SpawnFishingLine());
 		}
 		else
@@ -159,6 +160,7 @@ public class SpawnManager : MonoBehaviour
 	{
 		while (fishingLineCount < 2)
 		{
+			Debug.Log("Spawn fishingLine");
 			float randomX = Random.Range(-7.5f, 7.5f);
 			float Y = 9f;
 
