@@ -12,6 +12,8 @@ TagManager:
   - Feed
   - FishingShort
   - FishingLong
+  - FishingLine
+  - Hook
   layers:
   - Default
   - TransparentFX

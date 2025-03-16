@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -22,11 +23,16 @@ public class SpawnManager : MonoBehaviour
 	private int maxFeed2Count = 5;
 	private int maxFeed3Count = 3;
 
-	private int feed1Count = 0;
-	private int feed2Count = 0;
-	private int feed3Count = 0;
+	public int feed1Count = 0;
+	public int feed2Count = 0;
+	public int feed3Count = 0;
 
+	private bool isSpawning = false;
 	public int fishingLineCount = 0;
+
+	public float Feed1SpawnTime = 5f;
+	public float Feed2SpawnTime = 10f;
+	public float Feed3SpawnTime = 15f;
 
 	public DayAndNightCycle dn;
 
@@ -40,26 +46,54 @@ public class SpawnManager : MonoBehaviour
 
 	void Update()
 	{
-		if (dn.isNight)
+		// 밤에만 낚싯줄 스폰
+		if (fishingLineCount < 2 && !isSpawning && dn.isNight)
 		{
-			Debug.Log("Night");
 			StartCoroutine(SpawnFishingLine());
 		}
-		else
+
+		// 낮이 되면 모든 낚싯줄 삭제
+		if (!dn.isNight)
 		{
-			StopCoroutine(SpawnFishingLine());
+			RemoveAllFishingLines();
 		}
+	}
+
+	private bool IsPositionOccupied(Vector3 position, float radius)
+	{
+		// 해당 위치에 겹치는 Collider2D가 있는지 확인
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(position, radius);
+		foreach (Collider2D collider in colliders)
+		{
+			// Collider가 'Feed' 타입의 물체인 경우, 겹친다고 판단
+			if (collider.CompareTag("Feed"))
+			{
+				// 겹침
+				return true;  
+			}
+		}
+		// 겹침 없음
+		return false;  
 	}
 
 	private IEnumerator SpawnFeed1()
 	{
-		// feed_1의 스폰은 3초 후 시작하고 5초마다 반복
-		yield return new WaitForSeconds(5f);
+		// 3초 후 시작하고 5초마다 반복
+		yield return new WaitForSeconds(3f);
 
 		while (feed1Count < maxFeed1Count)
 		{
-			float randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -10f) : Random.Range(10f, 15f);
+			float randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -11f) : Random.Range(11f, 15f);
 			float randomY = Random.Range(-3f, 3f);
+
+			// 겹치지 않는 위치를 찾을 때까지 반복
+			Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
+			while (IsPositionOccupied(spawnPosition, 1f))  // 1f는 겹침을 확인할 반지름 값
+			{
+				randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -11f) : Random.Range(11f, 15f);
+				randomY = Random.Range(-3f, 3f);
+				spawnPosition = new Vector3(randomX, randomY, 0f);
+			}
 
 			GameObject randomFeed = feed_1[Random.Range(0, feed_1.Length)];
 
@@ -77,24 +111,33 @@ public class SpawnManager : MonoBehaviour
 				randomFeed.transform.localScale = new Vector3(cur_scale_x * (-1f), cur_scale_y, cur_scale_z);
 			}
 
-			Instantiate(randomFeed, new Vector3(randomX, randomY, 0f), Quaternion.identity);
+			Instantiate(randomFeed, spawnPosition, Quaternion.identity);
 
 			feed1Count++;
 
 			// 5초 후에 다시 스폰
-			yield return new WaitForSeconds(5f);
+			yield return new WaitForSeconds(Feed1SpawnTime);
 		}
 	}
 
 	private IEnumerator SpawnFeed2()
 	{
-		// feed_1의 스폰은 3초 후 시작하고 10초마다 반복
+		// 7초 후 시작하고 10초마다 반복
 		yield return new WaitForSeconds(7f);
 
 		while (feed2Count < maxFeed2Count)
 		{
-			float randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -10f) : Random.Range(10f, 15f);
+			float randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -11f) : Random.Range(11f, 15f);
 			float randomY = Random.Range(-3f, 3f);
+
+			// 겹치지 않는 위치를 찾을 때까지 반복
+			Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
+			while (IsPositionOccupied(spawnPosition, 1f))  // 1f는 겹침을 확인할 반지름 값
+			{
+				randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -11f) : Random.Range(11f, 15f);
+				randomY = Random.Range(-3f, 3f);
+				spawnPosition = new Vector3(randomX, randomY, 0f);
+			}
 
 			GameObject randomFeed = feed_2[Random.Range(0, feed_2.Length)];
 
@@ -116,22 +159,39 @@ public class SpawnManager : MonoBehaviour
 
 			feed2Count++;
 
-			// 5초 후에 다시 스폰
-			yield return new WaitForSeconds(10f);
+			yield return new WaitForSeconds(Feed2SpawnTime);
 		}
 	}
 
 	private IEnumerator SpawnFeed3()
 	{
-		// feed_1의 스폰은 3초 후 시작하고 10초마다 반복
+		// 9초 후 시작하고 15초마다 반복
 		yield return new WaitForSeconds(9f);
 
 		while (feed3Count < maxFeed3Count)
 		{
-			float randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -10f) : Random.Range(10f, 15f);
+			float randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -11f) : Random.Range(11f, 15f);
 			float randomY = Random.Range(-3f, 3f);
 
+			// 겹치지 않는 위치를 찾을 때까지 반복
+			Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
+			while (IsPositionOccupied(spawnPosition, 1f))  // 1f는 겹침을 확인할 반지름 값
+			{
+				randomX = Random.Range(0f, 1f) > 0.5f ? Random.Range(-15f, -11f) : Random.Range(11f, 15f);
+				randomY = Random.Range(-3f, 3f);
+				spawnPosition = new Vector3(randomX, randomY, 0f);
+			}
+
 			GameObject randomFeed = feed_3[Random.Range(0, feed_3.Length)];
+			
+			if (randomFeed.name == "MonkFish" && !dn.isNight)
+			{
+				continue;
+			}
+			else if (dn.isNight)
+			{
+				randomFeed = feed_3[0];
+			}
 
 			float cur_scale_x = randomFeed.transform.localScale.x;
 			float cur_scale_y = randomFeed.transform.localScale.y;
@@ -151,14 +211,16 @@ public class SpawnManager : MonoBehaviour
 
 			feed3Count++;
 
-			// 5초 후에 다시 스폰
-			yield return new WaitForSeconds(15f);
+			yield return new WaitForSeconds(Feed3SpawnTime);
 		}
 	}
 
 	private IEnumerator SpawnFishingLine()
 	{
-		while (fishingLineCount < 2)
+		isSpawning = true;
+		yield return new WaitForSeconds(3f);
+
+		while (fishingLineCount < 3)
 		{
 			Debug.Log("Spawn fishingLine");
 			float randomX = Random.Range(-7.5f, 7.5f);
@@ -168,9 +230,9 @@ public class SpawnManager : MonoBehaviour
 			bool isPositionOccupied = false;
 
 			// 이미 생성된 낚싯줄들의 X 위치를 체크하여 겹치는지 확인
-			foreach (Transform child in transform)
+			foreach (Transform child in transform) 
 			{
-				if (Mathf.Abs(child.position.x - randomX) < 2f)  // 1f는 최소 간격, 필요시 조정
+				if (Mathf.Abs(child.position.x - randomX) < 2f) 
 				{
 					isPositionOccupied = true;
 					break;
@@ -181,14 +243,55 @@ public class SpawnManager : MonoBehaviour
 			if (!isPositionOccupied)
 			{
 				GameObject randomFishingLine = fishingLine[Random.Range(0, fishingLine.Length)];
-				Instantiate(randomFishingLine, new Vector3(randomX, Y, 0f), Quaternion.identity);
+				GameObject spawnedFishingLine = Instantiate(randomFishingLine, new Vector3(randomX, Y, 0f), Quaternion.identity);
+				spawnedFishingLine.transform.SetParent(transform); 
 
 				fishingLineCount++;
 			}
 
-			// 15초 후에 다시 스폰
-			yield return new WaitForSeconds(15f);
+			yield return new WaitForSeconds(2f);
 		}
+		isSpawning = false;
 	}
 
+	private void RemoveAllFishingLines()
+	{
+		foreach (Transform child in transform)
+		{
+			if (child.CompareTag("FishingShort") || child.CompareTag("FishingLong"))
+			{
+				StartCoroutine(MoveUpAndDestroy(child.gameObject));
+			}
+		}
+
+		fishingLineCount = 0;
+	}
+
+	private IEnumerator MoveUpAndDestroy(GameObject fishingLine)
+	{
+		float moveSpeed = 10f;
+		Vector3 startPosition = fishingLine.transform.position;
+		// 목표 위치 (화면 밖으로 올라간 위치)
+		Vector3 targetPosition = new Vector3(startPosition.x, 8.5f, startPosition.z); 
+
+		// 낚싯줄을 빠르게 위로 이동시킴
+		float journeyLength = Vector3.Distance(startPosition, targetPosition);
+		float startTime = Time.time;
+
+		if (fishingLine != null)
+		{
+			while (Vector3.Distance(fishingLine.transform.position, targetPosition) > 0.1f)
+			{
+				float distanceCovered = (Time.time - startTime) * moveSpeed;
+				float fractionOfJourney = distanceCovered / journeyLength;
+
+				fishingLine.transform.position = Vector3.Lerp(startPosition, targetPosition, fractionOfJourney);
+
+				yield return null;
+			}
+
+			// 위치가 목표에 도달하면 낚싯줄을 삭제
+			Destroy(fishingLine);
+		}		
+	}
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -28,50 +29,59 @@ public class PlayerController : MonoBehaviour
     private Vector2 _currentPosY;
     private Vector2 _currentPosX;*/
 
-    [SerializeField]
-    private GameObject fish;
-    private float speed = 5f;
-
-	// 이동가능한 범위
-	private Vector2 p_moveLimit = new Vector2(4.0f, 4.0f);
-    [SerializeField]
-    private GameObject region;
+    public GameObject fish;
+    private float speed = 3f;
 
 	public RectTransform hp_front;
-    private float _maxHp = 10f;
-    public float _curHp = 10f;
+    public int _maxHp = 1;
+    public int _curHp = 1;
 
-	public RectTransform score_front;
-	private float _maxScore = 9f;
-	public float _curScore = 0f;
+	public RectTransform evol_front;
+	private float _maxEvol = 20f;
+	public float _curEvol = 0f;
 
 	private SpriteRenderer cur_player;
-	[SerializeField]
-	public Sprite player1;
-	[SerializeField]
-	public Sprite player2;
 
     private Transform p_transform;
 
 	public int playerstate = 0;
-	public int eatFeedCount = 0;
+	public int eatFeed1Count = 0;
+	public int eatFeed2Count = 0;
+	public int eatFeed3Count = 0;
+
 	private bool isUnBeatTime;
 
+	SpawnManager spawnManager;
 	EnemyController enemyController;
+	FishingLodController fishingLodController;
+	EvolutionController evolutionController;
+
+	public bool isCaught = false;
 
 	private void Start()
     {
-        cur_player = GetComponentInChildren<SpriteRenderer>();
+		cur_player = fish.GetComponentInChildren<SpriteRenderer>();
+		spawnManager = FindAnyObjectByType<SpawnManager>();
 
-		hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
-		score_front.localScale = new Vector3(_curScore / _maxScore, 1.0f, 1.0f);
+		//hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
+		evol_front.localScale = new Vector3(_curEvol / _maxEvol, 1.0f, 1.0f);
 	}
 
     // Update is called once per frame
     private void Update()
     {
-		Move();
-        /*movement2D.MoveTo(new Vector3(x, y, 0));*/
+		for (int i = 0; i < 3; i++)
+		{
+			if (transform.GetChild(i).gameObject.activeSelf)
+			{
+				fish = transform.GetChild(i).gameObject;
+			}
+		}
+
+		if (!gameObject.name.Contains("Caught"))
+		{
+			Move();
+		}
     }
 
     // 방향 키를 눌러 이동 방향 설정
@@ -137,7 +147,7 @@ public class PlayerController : MonoBehaviour
 			if (position.x < 0.03f) position.x = 0.03f;
 			if (position.x > 0.97f) position.x = 0.97f;
 			if (position.y < 0.2f) position.y = 0.2f;
-			if (position.y > 0.8f) position.y = 0.8f;
+			if (position.y > 0.95f) position.y = 0.95f;
 		}
 
 		if (playerstate == 1)
@@ -145,7 +155,7 @@ public class PlayerController : MonoBehaviour
 			if (position.x < 0.07f) position.x = 0.07f;
 			if (position.x > 0.93f) position.x = 0.93f;
 			if (position.y < 0.2f) position.y = 0.2f;
-			if (position.y > 0.8f) position.y = 0.8f;
+			if (position.y > 0.95f) position.y = 0.95f;
 		}
 
 		if (playerstate == 2)
@@ -153,7 +163,7 @@ public class PlayerController : MonoBehaviour
 			if (position.x < 0.11f) position.x = 0.11f;
 			if (position.x > 0.89f) position.x = 0.89f;
 			if (position.y < 0.22f) position.y = 0.22f;
-			if (position.y > 0.78f) position.y = 0.78f;
+			if (position.y > 0.95f) position.y = 0.95f;
 		}
 
 		transform.position = Camera.main.ViewportToWorldPoint(position);
@@ -161,48 +171,56 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		fishingLodController = FindObjectOfType<FishingLodController>();
 		// 먹이와 닿았을 경우
-		if (collision.CompareTag("Feed"))
+		if (collision.CompareTag("Feed") && !collision.gameObject.name.Contains("Caught"))
 		{
-			Debug.Log(_curScore);
-
 			enemyController = collision.GetComponent<EnemyController>();
 
 			if (playerstate == 0 && enemyController.enemyStage > 0)
 			{
-				_curHp -= 20f;
+				_curHp -= 1;
 				isUnBeatTime = true;
 				StartCoroutine(UnBeatTime());
 			}
 			else if (playerstate == 1 && enemyController.enemyStage > 1)
 			{
-				_curHp -= 10f;
+				_curHp -= 1;
 				isUnBeatTime = true;
 				StartCoroutine(UnBeatTime());
 			}
 			else
 			{
-				_curScore += 1f;
-				eatFeedCount++;
 				Destroy(collision.gameObject);
+				if (enemyController.enemyStage == 0)
+				{
+					if (_curEvol < 10f)
+					{
+						_curEvol++;
+					}
+					eatFeed1Count++;
+					spawnManager.feed1Count--;
+				}
+				else if (enemyController.enemyStage == 1)
+				{
+					if (_curEvol >= 10f)
+					{
+						_curEvol++;
+					}
+					eatFeed2Count++;
+					spawnManager.feed2Count--;
+				}
+				else if (enemyController.enemyStage == 2)
+				{
+					eatFeed3Count++;
+					spawnManager.feed3Count--;
+				}
 			}
 
-			hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
-			score_front.localScale = new Vector3(_curScore / _maxScore, 1.0f, 1.0f);
-
-			// 진화
-            if (eatFeedCount == 3)
-            {
-                cur_player.sprite = player1;
-                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-				playerstate = 1;
-			}
-            else if (eatFeedCount == 5)
-            {
-                cur_player.sprite = player2;
-                transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-				playerstate = 2;
-			}
+			//hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
+			// evol_front의 크기 업데이트
+			float scale = Mathf.Clamp01(_curEvol / _maxEvol); // 0에서 1 사이로 비율을 계산
+			evol_front.localScale = new Vector3(scale, 1.0f, 1.0f);
 		}
 	}
 
@@ -225,6 +243,7 @@ public class PlayerController : MonoBehaviour
 
 		while (countTime < 10)
 		{
+			speed = 1f;
 			if (countTime % 2 == 0)
 			{
 				cur_player.color = new Color32(255, 255, 255, 90);
@@ -240,7 +259,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		cur_player.color = new Color32(255, 255, 255, 255);
-
+		speed = 3f;
 		isUnBeatTime = false;
 
 		yield return null;
