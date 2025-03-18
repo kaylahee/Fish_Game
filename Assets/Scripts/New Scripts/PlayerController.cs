@@ -63,7 +63,6 @@ public class PlayerController : MonoBehaviour
 		cur_player = fish.GetComponentInChildren<SpriteRenderer>();
 		spawnManager = FindAnyObjectByType<SpawnManager>();
 
-		//hp_front.localScale = new Vector3(_curHp / _maxHp, 1.0f, 1.0f);
 		evol_front.localScale = new Vector3(_curEvol / _maxEvol, 1.0f, 1.0f);
 	}
 
@@ -75,6 +74,7 @@ public class PlayerController : MonoBehaviour
 			if (transform.GetChild(i).gameObject.activeSelf)
 			{
 				fish = transform.GetChild(i).gameObject;
+				cur_player = fish.GetComponentInChildren<SpriteRenderer>();
 			}
 		}
 
@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviour
         {
             // 이동
             transform.position += direction * speed * Time.deltaTime;
-            //transform.Translate(direction * speed * Time.deltaTime);
 
 			if (userInputH < 0f)
 			{
@@ -173,7 +172,7 @@ public class PlayerController : MonoBehaviour
 	{
 		fishingLodController = FindObjectOfType<FishingLodController>();
 		// 먹이와 닿았을 경우
-		if (collision.CompareTag("Feed") && !collision.gameObject.name.Contains("Caught"))
+		if (!gameObject.name.Contains("Caught") && collision.CompareTag("Feed") && !collision.gameObject.name.Contains("Caught"))
 		{
 			enemyController = collision.GetComponent<EnemyController>();
 
@@ -224,23 +223,9 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	/*private void LateUpdate()
-    {
-        // 플레이어 캐릭터가 화면 범위 바깥으로 나가지 못하도록 함
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x, stageData.LimitMax.x),
-            Mathf.Clamp(transform.position.y, stageData.LimitMin.y, stageData.LimitMax.y));
-    }*/
-
-	/*public void OnDie()
-    {
-        PlayerPrefs.SetInt("Score", score);
-        SceneManager.LoadScene(nextSceneName);
-    }*/
-
 	IEnumerator UnBeatTime()
 	{
 		int countTime = 0;
-
 		while (countTime < 10)
 		{
 			speed = 1f;

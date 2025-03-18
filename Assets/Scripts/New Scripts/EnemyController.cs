@@ -6,14 +6,6 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-	/*public int scorePoint = 50;
-
-	public float currentHP;
-	private PlayerHP playerHP;
-
-	[SerializeField]
-	private StageData stageData;*/
-
 	float t = 0f;
 	private Rigidbody2D rg;
 

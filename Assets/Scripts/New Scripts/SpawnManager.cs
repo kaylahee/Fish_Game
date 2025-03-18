@@ -51,12 +51,6 @@ public class SpawnManager : MonoBehaviour
 		{
 			StartCoroutine(SpawnFishingLine());
 		}
-
-		// 낮이 되면 모든 낚싯줄 삭제
-		if (!dn.isNight)
-		{
-			RemoveAllFishingLines();
-		}
 	}
 
 	private bool IsPositionOccupied(Vector3 position, float radius)
@@ -252,46 +246,5 @@ public class SpawnManager : MonoBehaviour
 			yield return new WaitForSeconds(2f);
 		}
 		isSpawning = false;
-	}
-
-	private void RemoveAllFishingLines()
-	{
-		foreach (Transform child in transform)
-		{
-			if (child.CompareTag("FishingShort") || child.CompareTag("FishingLong"))
-			{
-				StartCoroutine(MoveUpAndDestroy(child.gameObject));
-			}
-		}
-
-		fishingLineCount = 0;
-	}
-
-	private IEnumerator MoveUpAndDestroy(GameObject fishingLine)
-	{
-		float moveSpeed = 10f;
-		Vector3 startPosition = fishingLine.transform.position;
-		// 목표 위치 (화면 밖으로 올라간 위치)
-		Vector3 targetPosition = new Vector3(startPosition.x, 8.5f, startPosition.z); 
-
-		// 낚싯줄을 빠르게 위로 이동시킴
-		float journeyLength = Vector3.Distance(startPosition, targetPosition);
-		float startTime = Time.time;
-
-		if (fishingLine != null)
-		{
-			while (Vector3.Distance(fishingLine.transform.position, targetPosition) > 0.1f)
-			{
-				float distanceCovered = (Time.time - startTime) * moveSpeed;
-				float fractionOfJourney = distanceCovered / journeyLength;
-
-				fishingLine.transform.position = Vector3.Lerp(startPosition, targetPosition, fractionOfJourney);
-
-				yield return null;
-			}
-
-			// 위치가 목표에 도달하면 낚싯줄을 삭제
-			Destroy(fishingLine);
-		}		
 	}
 }

@@ -4,37 +4,39 @@ using UnityEngine;
 
 public class FishingLodController : MonoBehaviour
 {
-    // 내려갈 수 있는 제한선
-    [SerializeField]
-    private float limitY;
+	[SerializeField]
+	private float limitY;
 
-    private float downSpeed = 0.5f;
-    public float upSpeed = 1.5f;
+	private float downSpeed = 0.5f;
+	public float upSpeed = 1.5f;
 
-    private bool isDetecting = false;
-    public bool isReturning = false;
-    private float DetectTime;
+	private bool isDetecting = false;
+	public bool isReturning = false;
+	private float DetectTime;
+
+	// Caught Player 후 2초 지연을 위한 변수
+	private float returnDelay = 0f; 
 
 	SpawnManager spawnManager;
-
 	public GameObject caughtFish = null;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+	DayAndNightCycle dayAndnightCycle;
+
+	void Start()
+	{
 		spawnManager = FindObjectOfType<SpawnManager>();
+		dayAndnightCycle = FindObjectOfType<DayAndNightCycle>();
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
-		// 제한선보다 위에 있을 때 아래로 이동
+		float threshold = 0.05f;
+
+		// 낚싯줄이 내려가는 로직
 		if (transform.position.y >= limitY)
 		{
 			transform.position += Vector3.down * downSpeed * Time.deltaTime;
 		}
-
-		float threshold = 0.05f; // 5cm 정도의 오차 허용
 
 		if (Mathf.Abs(transform.position.y - limitY) <= threshold)
 		{
@@ -44,16 +46,21 @@ public class FishingLodController : MonoBehaviour
 		if (isDetecting)
 		{
 			DetectTime += Time.deltaTime;
-			// 탐지 시간이 2초 정도되면
 			if (DetectTime >= 2.0f)
 			{
-				isDetecting = false; // 탐지 종료
-				isReturning = true;  // 원래 위치로 이동 시작
+				isDetecting = false;
+				isReturning = true;
 				DetectTime = 0f;
 			}
 		}
 
-		// 원래 위치로 올라오는 코드
+		// 잡힌 물고기가 있으면 즉시 상승 시작
+		if (caughtFish != null || !dayAndnightCycle.isNight)
+		{
+			isReturning = true;
+		}
+
+		// 원래 위치로 올라오는 로직
 		if (isReturning)
 		{
 			if (transform.position.y <= 9f)
@@ -63,41 +70,46 @@ public class FishingLodController : MonoBehaviour
 
 			if (Mathf.Abs(transform.position.y - 9f) <= threshold)
 			{
-				if (caughtFish != null)
-				{
-					if (caughtFish.name.Contains("Player_1"))
-					{
-						caughtFish.GetComponent<PlayerController>()._curHp = 0;
-						float t = 0f;
-						t += Time.deltaTime;
-
-						if (t >= 2f)
-						{
-							Destroy(gameObject);
-						}
-					}
-					else
-					{
-						Destroy(gameObject);
-					}
-				}
-
-				Destroy(gameObject);
-
-				spawnManager.fishingLineCount--;
-
-				isReturning = false;
-				upSpeed = 1.5f;
+				HandleCaughtFish();
 			}
 		}
+	}
 
+	private void HandleCaughtFish()
+	{
 		if (caughtFish != null)
 		{
-			if (caughtFish.name == "Player_1")
+			if (caughtFish.name.Contains("Player_1"))
 			{
-				//caughtFish.GetComponent<PlayerController>().isCaught = true;
+				Debug.Log("Caught Player");
+				caughtFish.GetComponent<PlayerController>()._curHp = 0;
+
+				returnDelay += Time.deltaTime;
+				if (returnDelay >= 2f)
+				{
+					spawnManager.fishingLineCount--; // fishingLineCount 감소
+					Destroy(gameObject);
+					isReturning = false;
+					upSpeed = 1.5f;
+				}
+				return; // 여기서 실행 종료 (아래 코드 실행 방지)
 			}
-			isReturning = true;
+			else
+			{
+				EnemyController enemy = caughtFish.GetComponent<EnemyController>();
+				if (enemy != null)
+				{
+					if (enemy.enemyStage == 0) spawnManager.feed1Count--;
+					if (enemy.enemyStage == 1) spawnManager.feed2Count--;
+					if (enemy.enemyStage == 2) spawnManager.feed3Count--;
+				}
+			}
 		}
+
+		// fishingLineCount 감소
+		spawnManager.fishingLineCount--; 
+		Destroy(gameObject);
+		isReturning = false;
+		upSpeed = 1.5f;
 	}
 }
