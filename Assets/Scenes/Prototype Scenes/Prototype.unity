@@ -1970,6 +1970,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1018862866}
   resultScoreText: {fileID: 0}
+  score: 0
 --- !u!1 &1574873389
 GameObject:
   m_ObjectHideFlags: 0
@@ -2528,6 +2529,10 @@ PrefabInstance:
     - target: {fileID: 4609540847613823509, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
       propertyPath: m_Constraints
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4609540847613823509, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4660431766283660189, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
       propertyPath: fish

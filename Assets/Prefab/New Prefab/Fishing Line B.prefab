@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 697113354514267884}
   - component: {fileID: 2358414076887300507}
   m_Layer: 0
-  m_Name: GrabR
+  m_Name: Hook
   m_TagString: Hook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 1072015857981181060}
   m_Layer: 0
   m_Name: Fishing Line B
-  m_TagString: FishingShort
+  m_TagString: FishingLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,9 +111,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1020059029906610305}
   - {fileID: 470758711561342329}
   - {fileID: 4315600947753803563}
-  - {fileID: 1020059029906610305}
   - {fileID: 4528055692299936321}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitY: 3.25
+  upSpeed: 1.5
   isReturning: 0
   caughtFish: {fileID: 0}
 --- !u!1 &7128401766886870466
@@ -211,7 +212,7 @@ Transform:
   m_GameObject: {fileID: 7128401766886870466}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 1.198, z: 0}
+  m_LocalPosition: {x: 0, y: 1.198, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -286,7 +287,7 @@ GameObject:
   - component: {fileID: 1665836709536734257}
   - component: {fileID: 5028698125773372181}
   m_Layer: 0
-  m_Name: GrabL
+  m_Name: Hook
   m_TagString: Hook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

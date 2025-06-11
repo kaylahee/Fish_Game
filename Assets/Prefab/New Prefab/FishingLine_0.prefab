@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5646434954873984246}
   - component: {fileID: 7615725956461953426}
   m_Layer: 0
-  m_Name: GrabR
+  m_Name: Hook
   m_TagString: Hook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 1380038961345836289}
   - component: {fileID: 6049949143106837384}
   m_Layer: 0
-  m_Name: GrabL
+  m_Name: Hook
   m_TagString: Hook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 7603960022414131755}
   m_Layer: 0
   m_Name: FishingLine_0
-  m_TagString: FishingLong
+  m_TagString: FishingLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitY: 1.85
+  upSpeed: 1.5
   isReturning: 0
   caughtFish: {fileID: 0}
 --- !u!1 &7859941316779346574

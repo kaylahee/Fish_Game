@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -9,26 +10,6 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-	/*[SerializeField]
-    private string nextSceneName;*/
-
-	/*[SerializeField]
-    private StageData stageData;
-    private Movement2D movement2D;*/
-
-	/*private int score;
-    public int Score
-    {
-        set => score = Mathf.Max(0, value);
-        get => score;
-    }*/
-
-	/*private Transform _transformY;
-    private Transform _transformX;
-
-    private Vector2 _currentPosY;
-    private Vector2 _currentPosX;*/
-
     public GameObject fish;
     private float speed = 3f;
 
@@ -69,6 +50,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+		// 성장에 따른 Sprite 활성화 상태
 		for (int i = 0; i < 3; i++)
 		{
 			if (transform.GetChild(i).gameObject.activeSelf)
@@ -78,11 +60,17 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 
+		// 낚싯줄에 안걸린 상태면 움직이도록
+		//if (!isCaught)
+		//{
+		//	Move();
+		//}
+
 		if (!gameObject.name.Contains("Caught"))
 		{
 			Move();
 		}
-    }
+	}
 
     // 방향 키를 눌러 이동 방향 설정
     private void Move()
@@ -93,77 +81,65 @@ public class PlayerController : MonoBehaviour
         float userInputH = Input.GetAxis("Horizontal");
 
 		Vector3 direction = new Vector3(userInputH, userInputV, 0);
+		if (direction.magnitude > 1)
+			direction = direction.normalized;
 
-        if (!(userInputV == 0 && userInputH == 0))
-        {
-            // 이동
-            transform.position += direction * speed * Time.deltaTime;
+		Vector3 targetPos = transform.position + direction * speed * Time.deltaTime;
+		transform.position = Vector3.Lerp(transform.position, targetPos, 0.7f);
 
-			if (userInputH < 0f)
-			{
-				fish.transform.rotation = Quaternion.Euler(0, 0, 0);
-
-				// 3사분면
-				if (userInputV < 0f)
-				{
-					fish.transform.rotation = Quaternion.Euler(0, 0, 45);
-				}
-				// 2사분면
-				else if (userInputV > 0f)
-				{
-					fish.transform.rotation = Quaternion.Euler(0, 0, -45);
-				}
-			}
-			else if (userInputH > 0f)
-			{
-				fish.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-				// 4사분면
-				if (userInputV < 0f)
-				{
-					fish.transform.rotation = Quaternion.Euler(0, 180, 45);
-				}
-				// 1사분면
-				else if (userInputV > 0f)
-				{
-					fish.transform.rotation = Quaternion.Euler(0, 180, -45);
-				}
-			}
-			else if (userInputV < 0f)
-			{
-				fish.transform.rotation = Quaternion.Euler(0, 0, 90);
-			}
-			else if (userInputV > 0f)
-			{
-				fish.transform.rotation = Quaternion.Euler(0, 0, -90);
-			}
-		}
-
-        Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
-
-		if (playerstate == 0)
+		if (direction.magnitude > 0.5f)
 		{
-			if (position.x < 0.03f) position.x = 0.03f;
-			if (position.x > 0.97f) position.x = 0.97f;
-			if (position.y < 0.2f) position.y = 0.2f;
-			if (position.y > 0.95f) position.y = 0.95f;
+			// 좌우 방향 판단해서 Flip 처리
+			if (direction.x < 0)
+			{
+				// 왼쪽을 바라보게 (기본 방향)
+				fish.transform.localScale = new Vector3(1, 1, 1);
+
+				// 회전 각도 계산
+				float angle = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg;
+				Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+				fish.transform.rotation = Quaternion.Lerp(fish.transform.rotation, targetRotation, Time.deltaTime * 5f);
+			}
+			else if (direction.x > 0)
+			{
+				// 오른쪽을 바라보게 (Flip X)
+				fish.transform.localScale = new Vector3(-1, 1, 1);
+
+				// 회전 각도 계산
+				float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+				Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+				fish.transform.rotation = Quaternion.Lerp(fish.transform.rotation, targetRotation, Time.deltaTime * 5f);
+			}
+			else
+			{
+				// 수직 이동만 할 경우 (x == 0)
+				// 현재 바라보는 방향(Flip)에 따라 좌/우 벡터를 임의로 보정
+				bool isFacingRight = fish.transform.localScale.x < 0; // Flip X 되면 -1이니까 오른쪽
+
+				// 가짜 x 방향을 설정해 Atan2 계산용
+				float pseudoX = isFacingRight ? 1f : -1f;
+
+				float angle = isFacingRight
+					? Mathf.Atan2(direction.y, pseudoX) * Mathf.Rad2Deg       // 오른쪽일 때
+					: Mathf.Atan2(-direction.y, -pseudoX) * Mathf.Rad2Deg;    // 왼쪽일 때
+
+				Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+				fish.transform.rotation = Quaternion.Lerp(fish.transform.rotation, targetRotation, Time.deltaTime * 5f);
+			}
 		}
 
-		if (playerstate == 1)
-		{
-			if (position.x < 0.07f) position.x = 0.07f;
-			if (position.x > 0.93f) position.x = 0.93f;
-			if (position.y < 0.2f) position.y = 0.2f;
-			if (position.y > 0.95f) position.y = 0.95f;
-		}
+		// 배경 경계선 안으로 움직이도록
+		Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
 
-		if (playerstate == 2)
-		{
-			if (position.x < 0.11f) position.x = 0.11f;
-			if (position.x > 0.89f) position.x = 0.89f;
-			if (position.y < 0.22f) position.y = 0.22f;
-			if (position.y > 0.95f) position.y = 0.95f;
-		}
+		Vector4[] bounds = new Vector4[] {
+			new Vector4(0.03f, 0.97f, 0.2f, 0.95f), // playerstate 0
+			new Vector4(0.07f, 0.93f, 0.2f, 0.95f), // playerstate 1
+			new Vector4(0.11f, 0.89f, 0.22f, 0.95f) // playerstate 2
+		};
+
+		Vector4 b = bounds[playerstate];
+		position.x = Mathf.Clamp(position.x, b.x, b.y);
+		position.y = Mathf.Clamp(position.y, b.z, b.w);
 
 		transform.position = Camera.main.ViewportToWorldPoint(position);
     }
@@ -220,6 +196,11 @@ public class PlayerController : MonoBehaviour
 			// evol_front의 크기 업데이트
 			float scale = Mathf.Clamp01(_curEvol / _maxEvol); // 0에서 1 사이로 비율을 계산
 			evol_front.localScale = new Vector3(scale, 1.0f, 1.0f);
+		}
+
+		if (collision.CompareTag("FishingLine"))
+		{
+			isCaught = true;
 		}
 	}
 
