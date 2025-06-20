@@ -21,7 +21,7 @@ public class EvolutionController : MonoBehaviour
 	public Image MImage;
 	public Image LImage;
 
-	void Start()
+	private void Start()
 	{
 		playerController = GetComponent<PlayerController>();
 		spawnManager = FindObjectOfType<SpawnManager>();
@@ -34,31 +34,35 @@ public class EvolutionController : MonoBehaviour
 		playerController.fish = smallFish;
 	}
 
-	void Update()
+	private void Update()
 	{
-		// 예시로 점수가 1000점 이상이면 진화
-		if (playerController._curEvol >= 10 && !mediumFish.activeSelf && isSmall)
+		// 진화 포인트가 10 이상이면 진화
+		if (isSmall)
 		{
-			EvolveToMediumFish();
-			spawnManager.Feed1SpawnTime = 7f;
-			spawnManager.Feed2SpawnTime = 5f;
-			spawnManager.Feed2SpawnTime = 10f;
-			isSmall = false;
-			isMedium = true;
+			if (playerController._curEvol >= 10f)
+			{
+				EvolveToMediumFish();
+				ChangeSpawnTime(7f, 5f, 10f);
+
+				isSmall = false;
+				isMedium = true;
+			}
 		}
-		else if (playerController._curEvol >= 20 && !largeFish.activeSelf && isMedium)
+		else if (isMedium)
 		{
-			EvolveToLargeFish();
-			spawnManager.Feed1SpawnTime = 10f;
-			spawnManager.Feed2SpawnTime = 7f;
-			spawnManager.Feed2SpawnTime = 5f;
-			isMedium = false;
-			isLarge = true;
+			if (playerController._curEvol >= 20f)
+			{
+				EvolveToLargeFish();
+				ChangeSpawnTime(10f, 7f, 5f);
+
+				isMedium = false;
+				isLarge = true;
+			}
 		}
 	}
 
 	// MediumFish로 진화
-	void EvolveToMediumFish()
+	private void EvolveToMediumFish()
 	{
 		smallFish.SetActive(false);
 		mediumFish.SetActive(true);
@@ -70,7 +74,7 @@ public class EvolutionController : MonoBehaviour
 	}
 
 	// LargeFish로 진화
-	void EvolveToLargeFish()
+	private void EvolveToLargeFish()
 	{
 		mediumFish.SetActive(false);
 		largeFish.SetActive(true);
@@ -80,9 +84,10 @@ public class EvolutionController : MonoBehaviour
 		LImage.color = new Color32(255, 255, 255, 255);
 	}
 
-	// 점수 추가하는 예시 함수
-	public void AddPoints(int points)
+	private void ChangeSpawnTime(float feed1_T, float feed2_T, float feed3_T)
 	{
-		playerPoints += points;
+		spawnManager.Feed1SpawnTime = feed1_T;
+		spawnManager.Feed2SpawnTime = feed2_T;
+		spawnManager.Feed2SpawnTime = feed3_T;
 	}
 }

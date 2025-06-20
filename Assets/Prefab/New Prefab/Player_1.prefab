@@ -178,7 +178,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1159038906245181865}
   - component: {fileID: 4609540847613823509}
-  - component: {fileID: 5860427037540246816}
   - component: {fileID: 4660431766283660189}
   m_Layer: 0
   m_Name: Player_1
@@ -231,41 +230,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 3
---- !u!58 &5860427037540246816
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5425078598116238200}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.000000056000708, y: 0.46976805}
-  serializedVersion: 2
-  m_Radius: 0.62107414
 --- !u!114 &4660431766283660189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,8 +243,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fish: {fileID: 0}
-  region: {fileID: 0}
   hp_front: {fileID: 0}
-  score_front: {fileID: 0}
-  player1: {fileID: 0}
-  player2: {fileID: 0}
+  _maxHp: 1
+  _curHp: 1
+  evol_front: {fileID: 0}
+  _curEvol: 0
+  playerstate: 0
+  eatFeed1Count: 0
+  eatFeed2Count: 0
+  eatFeed3Count: 0
+  isCaught: 0

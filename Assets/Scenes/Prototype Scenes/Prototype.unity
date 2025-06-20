@@ -1033,8 +1033,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2358890997d2b84d88fbbabda145598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 5
-  player: {fileID: 1354477228}
 --- !u!1 &1018862864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,6 +1415,17 @@ MonoBehaviour:
   - {fileID: 1574873389}
   - {fileID: 1393048711}
   - {fileID: 1359297832}
+--- !u!114 &1354477239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4660431766283660189, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
+  m_PrefabInstance: {fileID: 3895389363718662990}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354477228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 795210968325e8e4c83919610e9674c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1359297832
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,11 +1904,11 @@ GameObject:
   - component: {fileID: 1571031849}
   - component: {fileID: 1571031850}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: SpawnManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1571031848
 Transform:
@@ -1942,20 +1951,31 @@ MonoBehaviour:
   - {fileID: 5818781871150287370, guid: 4042568b7ca85d54f8ab94847a5d055f, type: 3}
   - {fileID: 4544633590717130394, guid: ce54c100a7b125a41b29a411fe306588, type: 3}
   - {fileID: 34809331285823232, guid: 8bdad199556ee8840b83c85980cadc22, type: 3}
+  feed1Count: 0
+  feed2Count: 0
+  feed3Count: 0
+  Feed1SpawnTime: 5
+  Feed2SpawnTime: 10
+  Feed3SpawnTime: 15
   fishingLine:
   - {fileID: 9178626112345971389, guid: 9ecfe5b1eb8276c479ebd4a1e504c128, type: 3}
   - {fileID: 4591013175630602785, guid: 10f5e6ded2b7e1b4480808e983a0fee8, type: 3}
   - {fileID: 7289420985046693529, guid: d25a9e25218742749b16b81c5aae208e, type: 3}
   - {fileID: 658338204056916799, guid: 4f95b30b6f9e39147b6df35441817bf3, type: 3}
-  background: {fileID: 228938773}
-  feed1Count: 0
-  feed2Count: 0
-  feed3Count: 0
   fishingLineCount: 0
-  Feed1SpawnTime: 5
-  Feed2SpawnTime: 10
-  Feed3SpawnTime: 15
+  swimmer: {fileID: 9123620659382643524, guid: 6c2e3445e9dfba342a8708e4a10bd1ce, type: 3}
+  swimmerCount: 0
+  SwimmerSpawnTime: 10
+  trash:
+  - {fileID: 7597296645683734012, guid: b0c4f7db4b17e86478e1d6eb83de43a9, type: 3}
+  - {fileID: 4175467159706481671, guid: 010efc0e4b095d447bca6097bae5ae75, type: 3}
+  - {fileID: 3369154732997750742, guid: ad8c23e6904c5f44fa63bc1e2fc23668, type: 3}
+  - {fileID: 2237985336941230507, guid: 7ce05734f7c08c6498fa3eec462747e8, type: 3}
+  trashCount: 0
+  TrashSpawnTime: 6.5
   dn: {fileID: 1927433944}
+  sv: {fileID: 1571031850}
+  pc: {fileID: 1354477239}
 --- !u!114 &1571031850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2567,6 +2587,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1959582013, guid: 32508a88b77059f45835c46d995b6fb5, type: 3}
     - target: {fileID: 4660431766283660189, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
+      propertyPath: _curEvol
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4660431766283660189, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
       propertyPath: hp_front
       value: 
       objectReference: {fileID: 1236395812}
@@ -2606,8 +2630,7 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.024645329
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5860427037540246816, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2922255783657933667, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
     - {fileID: 3113233299187472915, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
@@ -2639,9 +2662,9 @@ SceneRoots:
   - {fileID: 595018338}
   - {fileID: 800111686}
   - {fileID: 402832067}
-  - {fileID: 1571031848}
-  - {fileID: 1613365139}
-  - {fileID: 1723586113}
   - {fileID: 1574873391}
   - {fileID: 1393048713}
   - {fileID: 1359297834}
+  - {fileID: 1571031848}
+  - {fileID: 1613365139}
+  - {fileID: 1723586113}

@@ -35,7 +35,7 @@ public class DayAndNightCycle : MonoBehaviour
 	{
 		curTime += Time.deltaTime;
 
-		// 하루가 반복되도록 한다.
+		// 하루가 반복되도록 설정
 		if (curTime >= oneDay)
 		{
 			curTime = 0;
@@ -60,6 +60,7 @@ public class DayAndNightCycle : MonoBehaviour
 		
 	}
 
+	// 색 변환
 	IEnumerator SwapColor(Color start, Color end)
 	{
 		float t = 0;

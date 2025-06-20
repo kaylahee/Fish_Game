@@ -3,14 +3,17 @@ using UnityEngine;
 
 public class PlayerHPManager : MonoBehaviour
 {
-	public List<GameObject> hp;  // HP 아이콘을 저장하는 리스트
-	
+	// HP 아이콘을 저장하는 리스트
+	public List<GameObject> hp;
+
+	private int previousMaxHp = 0;
+	private int previousCurHp = 0;
+
 	PlayerController controller;
 	GameSceneManager gameSceneManager;
 	ScoreViewer scoreViewer;
 
-	// Start is called before the first frame update
-	void Start()
+	private void Start()
 	{
 		controller = GetComponent<PlayerController>();
 		gameSceneManager = FindObjectOfType<GameSceneManager>(); 
@@ -21,7 +24,7 @@ public class PlayerHPManager : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		// HP 변화가 있을 때만 업데이트하도록 최적화
 		if (controller._maxHp != previousMaxHp || controller._curHp != previousCurHp)
@@ -29,9 +32,6 @@ public class PlayerHPManager : MonoBehaviour
 			UpdateHPStatus();
 		}
 	}
-
-	private int previousMaxHp = 0;
-	private int previousCurHp = 0;
 
 	// HP 상태 업데이트 메소드
 	private void UpdateHPStatus()
