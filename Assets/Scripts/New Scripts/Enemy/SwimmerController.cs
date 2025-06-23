@@ -26,19 +26,11 @@ public class SwimmerController : MonoBehaviour
 		StartCoroutine(FollowPlayer());
 	}
 
-	private void Update()
-	{
-		//if (!isFollowing)
-		//{
-		//	Move();
-		//}
-	}
-
 	private IEnumerator FollowPlayer()
 	{
-		isFollowing = true;
-
 		float elapsedTime = 0f;
+
+		Vector3 tempDirection = transform.position;
 
 		while (elapsedTime < followDuration)
 		{
@@ -46,39 +38,31 @@ public class SwimmerController : MonoBehaviour
 			{
 				Vector3 direction = playerController.transform.position - transform.position;
 				transform.position += direction.normalized * followSpeed * Time.deltaTime;
+				tempDirection = direction.normalized * followSpeed;
 			}
 
 			elapsedTime += Time.deltaTime;
-			yield return null;
 		}
 
-		isFollowing = false;
-		previous = rg.velocity;
-
-		Move();
+		Move(tempDirection);
+		yield return null;
 	}
 
-	private void Move()
+	private void Move(Vector2 tempDirection)
 	{
-		float angle = transform.rotation.y;
+		rg.velocity = tempDirection;
 
-		// 플레이어가 잠수부보다 오른쪽에 있을 때
-		if (playerController.transform.position.x > transform.position.x)
+		// 플레이어가 오른쪽 혹은 왼쪽에 위치할 때
+		if (playerController.transform.position.x != transform.position.x)
 		{
-			if (previous.x == -1)
-			{
-				transform.rotation = Quaternion.Euler(0, angle + 180, 0);
-			}
-			rg.velocity = new Vector2(-1, rg.velocity.y);  
+			// 잠수부는 왼쪽으로 돌아가야 함
+			float angle = transform.rotation.eulerAngles.y;
+			transform.rotation = Quaternion.Euler(0, (angle + 180) % 360, 0);
+			rg.velocity = new Vector2(-1 * rg.velocity.x, rg.velocity.y);
 		}
-		// 플레이어가 잠수부보다 왼쪽에 있을 때
 		else
 		{
-			if (previous.x == 1)
-			{
-				transform.rotation = Quaternion.Euler(0, angle + 180, 0);
-			}
-			rg.velocity = new Vector2(1, rg.velocity.y);  
+			rg.velocity = new Vector2(rg.velocity.x, rg.velocity.y);
 		}
 
 		// 시간 누적
