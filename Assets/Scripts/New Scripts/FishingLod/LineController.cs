@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class LineController : MonoBehaviour
 {
-	private void OnTriggerEnter2D(Collider2D other)
+	private void OnTriggerExit2D(Collider2D other)
 	{
 		if (other.CompareTag("Player") || other.CompareTag("Feed"))
 		{
-			// 줄(FishingLine)과 충돌한 경우
 			if (CompareTag("FishingLine"))
 			{
-				// 부모(FishingShort/FishingLong)의 스크립트를 찾아서 낚싯줄을 올리기
-				transform.parent.GetComponent<FishingLodController>().isReturning = true;
+				// 낚싯줄 올리기
+				var lod = transform.parent.GetComponent<FishingLodController>();
+				lod.isReturning = true;
+
+				Debug.Log("Player Collider enabled? " + other.GetComponent<Collider2D>().enabled);
+				Debug.Log("Player Rigidbody2D simulated? " + other.GetComponent<Rigidbody2D>().simulated);
 			}
 		}
 	}
-
 }

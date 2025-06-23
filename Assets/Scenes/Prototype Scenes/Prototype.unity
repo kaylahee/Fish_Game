@@ -156,8 +156,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 894.1904, y: -487.39}
-  m_SizeDelta: {x: 131.6192, y: 74.82}
+  m_AnchoredPosition: {x: 851.83, y: -462.89}
+  m_SizeDelta: {x: 160.2748, y: 89.8086}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &48224149
 MonoBehaviour:
@@ -231,8 +231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 602.92, y: -487.39}
-  m_SizeDelta: {x: 102.0049, y: 58.303}
+  m_AnchoredPosition: {x: 538.30493, y: -467.7799}
+  m_SizeDelta: {x: 125.4959, y: 80.024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &174737057
 MonoBehaviour:
@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 693569047}
   - component: {fileID: 693569048}
   - component: {fileID: 693569049}
+  - component: {fileID: 693569050}
   m_Layer: 7
   m_Name: SmallFish
   m_TagString: Player
@@ -693,12 +694,27 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.5699999
+--- !u!114 &693569050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693569046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515f71f75eba4234c8bd16614d78945b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eatFeed1Count: 0
+  eatFeed2Count: 0
+  eatFeed3Count: 0
 --- !u!1 &800111685
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,8 +781,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 273.8706, y: 51.6425}
-  m_SizeDelta: {x: 658.0961, y: 38.8687}
+  m_AnchoredPosition: {x: 112.46045, y: 72.22504}
+  m_SizeDelta: {x: 819.5064, y: 80.0337}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &881304810
 MonoBehaviour:
@@ -817,6 +833,7 @@ GameObject:
   - component: {fileID: 932432890}
   - component: {fileID: 932432892}
   - component: {fileID: 932432891}
+  - component: {fileID: 932432893}
   m_Layer: 7
   m_Name: MediumFish
   m_TagString: Player
@@ -868,7 +885,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -1.1273689, y: 0}
@@ -926,6 +943,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &932432893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932432889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515f71f75eba4234c8bd16614d78945b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eatFeed1Count: 0
+  eatFeed2Count: 0
+  eatFeed3Count: 0
 --- !u!1 &948925883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,11 +1295,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 748ee78e3387f544883533f1789f7d73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fish: {fileID: 693569046}
+  cur_player: {fileID: 0}
   smallFish: {fileID: 693569046}
   mediumFish: {fileID: 932432889}
   largeFish: {fileID: 1473194469}
+  isSmall: 1
+  isMedium: 0
+  isLarge: 0
+  evol_front: {fileID: 881304810}
   MImage: {fileID: 174737057}
   LImage: {fileID: 48224149}
+  _curEvol: 0
+  _maxEvol: 20
+  playerstate: 0
+  gameManager: {fileID: 1571031847}
 --- !u!114 &1354477238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1280,21 +1322,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc2d3fe048cc5b47a53d2f550f87524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _curHp: 1
+  _maxHp: 1
   hp:
   - {fileID: 1574873389}
   - {fileID: 1393048711}
   - {fileID: 1359297832}
---- !u!114 &1354477239 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4660431766283660189, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
-  m_PrefabInstance: {fileID: 3895389363718662990}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1354477228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 795210968325e8e4c83919610e9674c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1613365137}
 --- !u!1 &1359297832
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,7 +1345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1359297833
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1354,7 +1388,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -34135567, guid: b757b14ed68323244b754e1ca16bc52e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1395,7 +1429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1393048712
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1438,7 +1472,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -34135567, guid: b757b14ed68323244b754e1ca16bc52e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1474,6 +1508,7 @@ GameObject:
   - component: {fileID: 1473194470}
   - component: {fileID: 1473194472}
   - component: {fileID: 1473194471}
+  - component: {fileID: 1473194473}
   m_Layer: 7
   m_Name: LargeFish
   m_TagString: Player
@@ -1525,7 +1560,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -1.4074875, y: 0}
@@ -1583,6 +1618,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1473194473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473194469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515f71f75eba4234c8bd16614d78945b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eatFeed1Count: 0
+  eatFeed2Count: 0
+  eatFeed3Count: 0
 --- !u!1 &1478382222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1720,8 +1770,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 296, y: -488.36}
-  m_SizeDelta: {x: 68.6533, y: 56.36}
+  m_AnchoredPosition: {x: 172.9, y: -467.78}
+  m_SizeDelta: {x: 95.9782, y: 80.032}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1503090893
 MonoBehaviour:
@@ -1821,9 +1871,6 @@ MonoBehaviour:
   - {fileID: 5818781871150287370, guid: 4042568b7ca85d54f8ab94847a5d055f, type: 3}
   - {fileID: 4544633590717130394, guid: ce54c100a7b125a41b29a411fe306588, type: 3}
   - {fileID: 34809331285823232, guid: 8bdad199556ee8840b83c85980cadc22, type: 3}
-  feed1Count: 0
-  feed2Count: 0
-  feed3Count: 0
   Feed1SpawnTime: 5
   Feed2SpawnTime: 10
   Feed3SpawnTime: 15
@@ -1845,7 +1892,7 @@ MonoBehaviour:
   TrashSpawnTime: 6.5
   dn: {fileID: 1927433944}
   sv: {fileID: 1571031850}
-  pc: {fileID: 1354477239}
+  evolutionController: {fileID: 1354477237}
 --- !u!114 &1571031850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1858,9 +1905,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea6965972dd27944b1322b72de0da00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1354477228}
+  score: 0
   scoreText: {fileID: 1018862866}
   resultScoreText: {fileID: 0}
-  score: 0
 --- !u!114 &1571031851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,7 +1921,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a74f920b33b6684ea81ffa1b6abd94e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  evol_front: {fileID: 881304810}
 --- !u!1 &1574873389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1890,7 +1937,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1574873390
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1933,7 +1980,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -34135567, guid: b757b14ed68323244b754e1ca16bc52e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2111,8 +2158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 602.9186, y: 51.6425}
-  m_SizeDelta: {x: 658.0961, y: 38.8687}
+  m_AnchoredPosition: {x: 522.2135, y: 72.22504}
+  m_SizeDelta: {x: 819.5064, y: 80.0337}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1634241155
 MonoBehaviour:
