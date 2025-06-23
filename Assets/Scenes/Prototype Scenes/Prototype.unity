@@ -156,8 +156,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 855, y: -475}
-  m_SizeDelta: {x: 200, y: 120}
+  m_AnchoredPosition: {x: 894.1904, y: -487.39}
+  m_SizeDelta: {x: 131.6192, y: 74.82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &48224149
 MonoBehaviour:
@@ -231,8 +231,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 410, y: -475}
-  m_SizeDelta: {x: 155, y: 100}
+  m_AnchoredPosition: {x: 602.92, y: -487.39}
+  m_SizeDelta: {x: 102.0049, y: 58.303}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &174737057
 MonoBehaviour:
@@ -765,8 +765,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -80, y: 65}
-  m_SizeDelta: {x: 1000, y: 50}
+  m_AnchoredPosition: {x: 273.8706, y: 51.6425}
+  m_SizeDelta: {x: 658.0961, y: 38.8687}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &881304810
 MonoBehaviour:
@@ -1720,8 +1720,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -80, y: -475}
-  m_SizeDelta: {x: 110, y: 95}
+  m_AnchoredPosition: {x: 296, y: -488.36}
+  m_SizeDelta: {x: 68.6533, y: 56.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1503090893
 MonoBehaviour:
@@ -2111,8 +2111,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 420, y: 65}
-  m_SizeDelta: {x: 1000, y: 50}
+  m_AnchoredPosition: {x: 602.9186, y: 51.6425}
+  m_SizeDelta: {x: 658.0961, y: 38.8687}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1634241155
 MonoBehaviour:
@@ -2487,7 +2487,7 @@ PrefabInstance:
       objectReference: {fileID: 881304809}
     - target: {fileID: 5425078598116238200, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
       propertyPath: m_Name
-      value: Player_1
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5425078598116238200, guid: 43443c3369a0574408d92119ed2e21ba, type: 3}
       propertyPath: m_Layer
