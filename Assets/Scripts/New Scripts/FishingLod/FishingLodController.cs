@@ -46,8 +46,11 @@ public class FishingLodController : MonoBehaviour
 		// ³·ÀÌ µÆ°Å³ª, ÀâÈù ¹°°í±â°¡ ÀÖÀ¸¸é Áï½Ã »ó½Â ½ÃÀÛ
 		if (caughtFish != null || !dayAndnightCycle.isNight)
 		{
-			isReturning = true;
-			upSpeed = 3f;
+			if (!isReturning)
+			{
+				isReturning = true;
+				upSpeed = 3f;
+			}
 		}
 		else
 		{
@@ -56,7 +59,11 @@ public class FishingLodController : MonoBehaviour
 				DetectTime += Time.deltaTime;
 				if (DetectTime >= 2.0f)
 				{
-					isReturning = true;
+					if (!isReturning)
+					{
+						isReturning = true;
+						upSpeed = 3f;
+					}
 					DetectTime = 0f;
 				}
 			}

@@ -6,8 +6,7 @@ public class HookController : MonoBehaviour
 {
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		// 부모(FishingShort/FishingLong)의 스크립트를 찾아서 플레이어를 붙잡기
-		FishingLodController fishingLod = transform.parent.GetComponent<FishingLodController>();
+		FishingLodController fishingLod = GetComponentInParent<FishingLodController>();
 
 		if (fishingLod.caughtFish == null)
 		{
@@ -17,7 +16,10 @@ public class HookController : MonoBehaviour
 				fishingLod.caughtFish = other.transform.parent.gameObject;
 
 				// 잡힌 물고기는 Caught 이름을 추가함
-				other.transform.parent.gameObject.name += "Caught";
+				if (!other.transform.parent.gameObject.name.Contains("Caught"))
+				{
+					other.transform.parent.gameObject.name += "Caught";
+				}
 				// 플레이어를 낚싯줄의 자식으로 설정하여 같이 이동하도록 함
 				other.transform.parent.gameObject.transform.SetParent(transform.parent);
 			}
@@ -25,10 +27,17 @@ public class HookController : MonoBehaviour
 			if (other.CompareTag("Feed"))
 			{
 				fishingLod.caughtFish = other.gameObject;
-				other.name += "Caught";
+				other.gameObject.name += "Caught";
+				if (!other.gameObject.name.Contains("Caught"))
+				{
+					other.gameObject.name += "Caught";
+				}
 
-				other.transform.SetParent(transform.parent);
+				other.gameObject.transform.SetParent(transform.parent);
 			}
+			
+			gameObject.GetComponent<CircleCollider2D>().enabled = false;
+			other.GetComponent<CircleCollider2D>().enabled = false;
 		}
 	}
 

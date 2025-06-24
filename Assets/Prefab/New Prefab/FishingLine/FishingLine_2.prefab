@@ -101,7 +101,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitY: 2.15
-  upSpeed: 1.5
   isReturning: 0
   caughtFish: {fileID: 0}
 --- !u!1 &4794679497464582928
@@ -115,7 +114,7 @@ GameObject:
   - component: {fileID: 5935304638435184214}
   - component: {fileID: 3300268733223886679}
   - component: {fileID: 3032594774584302089}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hook
   m_TagString: Hook
   m_Icon: {fileID: 0}
@@ -226,7 +225,7 @@ GameObject:
   - component: {fileID: 3614552681527776163}
   - component: {fileID: 150939793245595036}
   - component: {fileID: 8936562542843746763}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Line
   m_TagString: FishingLine
   m_Icon: {fileID: 0}

@@ -302,6 +302,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitY: 3.3
-  upSpeed: 1.5
   isReturning: 0
   caughtFish: {fileID: 0}

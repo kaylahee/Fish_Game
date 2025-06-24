@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class LineController : MonoBehaviour
 {
-	private void OnTriggerExit2D(Collider2D other)
+	private void OnTriggerEnter2D(Collider2D other)
 	{
+		FishingLodController fishingLodController = GetComponentInParent<FishingLodController>();
+		
+		// 이미 잡힌 물고기가 있다면 아무것도 하지 않음
+		if (fishingLodController.caughtFish != null)
+		{
+			return;
+		}
+
 		if (other.CompareTag("Player") || other.CompareTag("Feed"))
 		{
-			if (CompareTag("FishingLine"))
+			// 낚싯줄 올리기
+			if (!fishingLodController.isReturning)
 			{
-				// 낚싯줄 올리기
-				var lod = transform.parent.GetComponent<FishingLodController>();
-				lod.isReturning = true;
-
-				Debug.Log("Player Collider enabled? " + other.GetComponent<Collider2D>().enabled);
-				Debug.Log("Player Rigidbody2D simulated? " + other.GetComponent<Rigidbody2D>().simulated);
+				fishingLodController.isReturning = true;
 			}
 		}
 	}

@@ -31,7 +31,7 @@ public class InteractionController : MonoBehaviour
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		// ³¬½ËÁÙ°ú ´ê¾ÒÀ» °æ¿ì
-		if (collision.CompareTag("FishingLine"))
+		if (collision.CompareTag("Hook"))
 		{
 			isCaught = true;
 		}
