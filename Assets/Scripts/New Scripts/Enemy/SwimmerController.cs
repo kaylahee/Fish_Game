@@ -12,7 +12,6 @@ public class SwimmerController : MonoBehaviour
 	public float followDuration = 5f;
 	public float moveSpeed = 1.5f;
 
-	private bool isFollowing = false;
 	private Vector2 moveDirection;
 	private float t = 0f;
 

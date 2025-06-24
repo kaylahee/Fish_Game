@@ -15,11 +15,11 @@ public class ScoreViewer : MonoBehaviour
 	[HideInInspector]
 	public TextMeshProUGUI resultScoreText;       
 
-	InteractionController interactionController;
+	PlayerController playerController;
 
 	private void Start()
 	{
-		interactionController = player.GetComponentInChildren<InteractionController>();
+		playerController = player.GetComponent<PlayerController>();
 		UpdateScore();
 
 		// 활성화된 씬이 엔드씬일 경우
@@ -42,9 +42,9 @@ public class ScoreViewer : MonoBehaviour
 	public void UpdateScore()
 	{
 		// 먹이 종류별로 점수 계산
-		score = interactionController.eatFeed1Count * 10
-				+ interactionController.eatFeed2Count * 20
-				+ interactionController.eatFeed3Count * 30;
+		score = playerController.eatFeed1Count * 10
+				+ playerController.eatFeed2Count * 20
+				+ playerController.eatFeed3Count * 30;
 
 		scoreText.text = "SCORE: " + score.ToString();
 	}

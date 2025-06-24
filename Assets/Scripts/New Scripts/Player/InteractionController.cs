@@ -7,7 +7,6 @@ public class InteractionController : MonoBehaviour
 	private SpriteRenderer cur_player;
 
 	private bool isCaught = false;
-	private bool isUnBeatTime;
 
 	PlayerController playerController;
 	EvolutionController evolutionController;
@@ -15,17 +14,14 @@ public class InteractionController : MonoBehaviour
 	
 	EnemyController enemyController;
 
-	public int eatFeed1Count = 0;
-	public int eatFeed2Count = 0;
-	public int eatFeed3Count = 0;
-
 	private void Start()
 	{
+		playerController = GetComponentInParent<PlayerController>();
 		evolutionController = GetComponentInParent<EvolutionController>();
+		playerHPManager = GetComponentInParent<PlayerHPManager>();
+
 		cur_player = evolutionController.cur_player;
 
-		playerController = GetComponentInParent<PlayerController>();
-		playerHPManager = GetComponentInParent<PlayerHPManager>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -61,15 +57,15 @@ public class InteractionController : MonoBehaviour
 						// 먹은 먹이 계산
 						if (enemyController.enemyStage == 0)
 						{
-							eatFeed1Count++;
+							playerController.eatFeed1Count++;
 						}
 						else if (enemyController.enemyStage == 1)
 						{
-							eatFeed2Count++;
+							playerController.eatFeed2Count++;
 						}
 						else if (enemyController.enemyStage == 2)
 						{
-							eatFeed3Count++;
+							playerController.eatFeed3Count++;
 						}
 
 						// 진화 포인트 증가
@@ -99,7 +95,6 @@ public class InteractionController : MonoBehaviour
 		playerHPManager.UpdateHPStatus();
 
 		// 무적 상태 전환
-		isUnBeatTime = true;
 		StartCoroutine(UnBeatTime());
 	}
 
@@ -124,7 +119,6 @@ public class InteractionController : MonoBehaviour
 		}
 		cur_player.color = new Color32(255, 255, 255, 255);
 		playerController.Movespeed = 3f;
-		isUnBeatTime = false;
 
 		yield return null;
 	}

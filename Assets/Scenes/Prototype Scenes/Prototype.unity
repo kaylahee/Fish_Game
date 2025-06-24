@@ -969,7 +969,6 @@ GameObject:
   - component: {fileID: 948925886}
   - component: {fileID: 948925885}
   - component: {fileID: 948925884}
-  - component: {fileID: 948925887}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1052,18 +1051,6 @@ Transform:
   - {fileID: 1927433943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &948925887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 948925883}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2358890997d2b84d88fbbabda145598, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1018862864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1890,9 +1877,8 @@ MonoBehaviour:
   - {fileID: 2237985336941230507, guid: 7ce05734f7c08c6498fa3eec462747e8, type: 3}
   trashCount: 0
   TrashSpawnTime: 6.5
-  dn: {fileID: 1927433944}
-  sv: {fileID: 1571031850}
-  evolutionController: {fileID: 1354477237}
+  player: {fileID: 1354477228}
+  dayandnight: {fileID: 1927433942}
 --- !u!114 &1571031850
 MonoBehaviour:
   m_ObjectHideFlags: 0

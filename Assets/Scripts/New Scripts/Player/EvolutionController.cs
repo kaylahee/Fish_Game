@@ -59,7 +59,7 @@ public class EvolutionController : MonoBehaviour
 			if (_curEvol >= 10f)
 			{
 				EvolveToMediumFish();
-				ChangeSpawnTime(7f, 5f, 10f);
+				ChangeSpawnTime(5f, 3f, 10f);
 
 				isSmall = false;
 				isMedium = true;
@@ -70,7 +70,7 @@ public class EvolutionController : MonoBehaviour
 			if (_curEvol >= 20f)
 			{
 				EvolveToLargeFish();
-				ChangeSpawnTime(10f, 7f, 5f);
+				ChangeSpawnTime(7f, 5f, 5f);
 
 				isMedium = false;
 				isLarge = true;

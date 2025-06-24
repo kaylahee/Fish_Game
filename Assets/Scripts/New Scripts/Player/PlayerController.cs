@@ -13,6 +13,11 @@ public class PlayerController : MonoBehaviour
 	[Header("현재 물고기 속도")]
     public float Movespeed = 3f;
 
+	[Header("먹은 먹이 수")]
+	public int eatFeed1Count = 0;
+	public int eatFeed2Count = 0;
+	public int eatFeed3Count = 0;
+
 	EvolutionController evolutionController;
 
 	private GameObject curFish;

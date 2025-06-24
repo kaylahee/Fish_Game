@@ -23,9 +23,9 @@ public class SpawnManager : MonoBehaviour
 	private List<GameObject> feed2List = new List<GameObject>();
 	private List<GameObject> feed3List = new List<GameObject>();
 
-	public float Feed1SpawnTime = 5f;
+	public float Feed1SpawnTime = 3f;
 	public float Feed2SpawnTime = 10f;
-	public float Feed3SpawnTime = 15f;
+	public float Feed3SpawnTime = 10f;
 
 	[Header("낚싯줄 관련")]
 	[SerializeField] 
@@ -46,43 +46,45 @@ public class SpawnManager : MonoBehaviour
 	public int trashCount = 0;
 	public float TrashSpawnTime = 6.5f;
 
-	private bool hasFeed3time = false;
+	public GameObject player;
+	public GameObject dayandnight;
 
-	public DayAndNightCycle dn;
-	public ScoreViewer sv;
-	public EvolutionController evolutionController;
+	EvolutionController evolutionController;
+	DayAndNightCycle dayAndNightCycle;
 
 	// 먹이들 스폰
 	void Start()
     {
-		evolutionController = GetComponent<EvolutionController>();
+		evolutionController = player.GetComponent<EvolutionController>();
+		dayAndNightCycle = dayandnight.GetComponent<DayAndNightCycle>();
 
-		StartCoroutine(SpawnFeed(feed1List, feed_1, 3f, () => Feed1SpawnTime, feed1List.Count, maxFeed1Count));
-		StartCoroutine(SpawnFeed(feed2List, feed_2, 7f, () => Feed2SpawnTime, feed2List.Count, maxFeed2Count));
-		StartCoroutine(SpawnFeed(feed3List, feed_3, 9f, () => Feed3SpawnTime, feed3List.Count, maxFeed3Count));
+		StartCoroutine(SpawnFeed(feed1List, feed_1, 0f, () => Feed1SpawnTime, feed1List.Count, maxFeed1Count));
+		StartCoroutine(SpawnFeed(feed2List, feed_2, 4.5f, () => Feed2SpawnTime, feed2List.Count, maxFeed2Count));
 	}
 
 	void Update()
 	{
 		// 낮에만 쓰레기 스폰
-		if (trashCount < 3 && !isTrashSpawning && !dn.isNight)
+		if (trashCount < 3 && !isTrashSpawning && !dayAndNightCycle.isNight)
 		{
 			StartCoroutine(SpawnTrash());
 		}
 
 		// 밤에만 낚싯줄 스폰
-		if (fishingLineCount < 2 && !isFishingLodSpawning && dn.isNight)
+		if (fishingLineCount < 2 && !isFishingLodSpawning && dayAndNightCycle.isNight)
 		{
 			StartCoroutine(SpawnFishingLine());
 		}
 
-		if (evolutionController.playerstate == 1)
+		int prevPlayerState = evolutionController.playerstate;
+		// 플레이어가 2단계일때부터 3단계 먹이 스폰
+		if (prevPlayerState != 1 && evolutionController.playerstate == 1)
 		{
 			StartCoroutine(SpawnFeed(feed3List, feed_3, 3f, () => Feed3SpawnTime, feed3List.Count, maxFeed3Count));
 		}
 
 		// 플레이어가 3단계일 경우 잠수부 스폰
-		if (evolutionController.playerstate == 2)
+		if (prevPlayerState != 2 && evolutionController.playerstate == 2)
 		{
 			StartCoroutine(SpawnSwimmer());
 		}
@@ -127,7 +129,7 @@ public class SpawnManager : MonoBehaviour
 			// 랜덤 먹이가 나올 수 있도록 설정
 			GameObject randomFeed = feed[UnityEngine.Random.Range(0, feed.Length)];
 
-			if (!dn.isNight && randomFeed.name == "Monkfish")
+			if (!dayAndNightCycle.isNight && randomFeed.name == "Monkfish")
 			{
 				randomFeed = feed[UnityEngine.Random.Range(1, feed.Length)];
 			}

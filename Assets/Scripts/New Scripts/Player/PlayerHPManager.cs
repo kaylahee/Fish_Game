@@ -29,12 +29,6 @@ public class PlayerHPManager : MonoBehaviour
 		{
 			hp[i].SetActive(true);
 		}
-
-		for (int i = 0; i < _curHp; i++)
-		{
-			hp[i].SetActive(true);
-			hp[i].GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
-		}
 	}
 
 	// Update is called once per frame
@@ -69,18 +63,6 @@ public class PlayerHPManager : MonoBehaviour
 		for (int i = 0; i < _maxHp; i++)
 		{
 			hp[i].SetActive(true);
-		}
-
-		// 현재 체력 수만큼 흰색 처리
-		for (int i = 0; i < _curHp; i++)
-		{
-			hp[i].GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
-		}
-
-		// 남은 체력은 회색 처리
-		for (int i = _curHp; i < _maxHp; i++)
-		{
-			hp[i].GetComponent<SpriteRenderer>().color = new Color(0.623f, 0.623f, 0.623f);
 		}
 	}
 }

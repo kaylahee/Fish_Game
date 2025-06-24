@@ -9,9 +9,6 @@ public class FishingLodController : MonoBehaviour
 
 	private float downSpeed = 0.5f;
 	private float upSpeed = 1.5f;
-
-	// 물고기 탐색 변수
-	private bool isDetecting = false;
 	
 	// 낚싯줄 회수 변수
 	[HideInInspector]
@@ -19,8 +16,6 @@ public class FishingLodController : MonoBehaviour
 
 	// 물고기 탐색 시간
 	private float DetectTime;
-	// Caught Player 후 2초 지연을 위한 변수
-	private float returnDelay = 0f; 
 
 	public GameObject caughtFish = null;
 

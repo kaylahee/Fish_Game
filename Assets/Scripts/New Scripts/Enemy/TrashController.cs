@@ -11,8 +11,6 @@ public class TrashController : MonoBehaviour
 
 	private bool isMoving = true;
 
-	ScoreViewer sv;
-
 	// Start is called before the first frame update
 	private void Start()
     {
