@@ -37,7 +37,7 @@ public class HookController : MonoBehaviour
 			}
 			
 			gameObject.GetComponent<CircleCollider2D>().enabled = false;
-			other.GetComponent<CircleCollider2D>().enabled = false;
+			other.GetComponent<Collider2D>().enabled = false;
 		}
 	}
 

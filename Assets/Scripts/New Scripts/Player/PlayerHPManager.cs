@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerHPManager : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class PlayerHPManager : MonoBehaviour
 	private bool isEvol_MtoL = false;
 
 	EvolutionController evolutionController;
+	InteractionController interactionController;
 
 	public GameObject gameManager;
 	GameSceneManager gameSceneManager;
@@ -22,6 +25,7 @@ public class PlayerHPManager : MonoBehaviour
 	private void Start()
 	{
 		evolutionController = GetComponent<EvolutionController>();
+		interactionController = evolutionController.fish.GetComponent<InteractionController>();
 		gameSceneManager = gameManager.GetComponent<GameSceneManager>();
 
 		// _maxHp 만큼 아이콘 active
@@ -29,30 +33,36 @@ public class PlayerHPManager : MonoBehaviour
 		{
 			hp[i].SetActive(true);
 		}
+
+		for (int i = 0; i < _curHp; i++)
+		{
+			hp[i].SetActive(true);
+			hp[i].GetComponent<Image>().color = new Color(255, 255, 255);
+		}
 	}
 
 	// Update is called once per frame
-	private void Update()
+	private void Update()	
 	{
-		if (_curHp == 0)
-		{	
+		if (!gameObject.name.Contains("Caught") && _curHp == 0)
+		{
 			gameSceneManager.LoadScene("EndScene");
 		}
 
-		if (isEvol_StoM && evolutionController.playerstate == 1)
+		if (!isEvol_StoM && evolutionController.playerstate == 1)
 		{
 			_maxHp++;
 			_curHp++;
 			UpdateHPStatus();
-			isEvol_StoM = false;
+			isEvol_StoM = true;
 		}
 
-		if (isEvol_MtoL && evolutionController.playerstate == 2)
+		if (!isEvol_MtoL && evolutionController.playerstate == 2)
 		{
 			_maxHp++;
 			_curHp++;
 			UpdateHPStatus();
-			isEvol_MtoL = false;
+			isEvol_MtoL = true;
 		}
 	}
 
@@ -63,6 +73,18 @@ public class PlayerHPManager : MonoBehaviour
 		for (int i = 0; i < _maxHp; i++)
 		{
 			hp[i].SetActive(true);
+		}
+
+		// 현재 체력 수만큼 흰색 처리
+		for (int i = 0; i < _curHp; i++)
+		{
+			hp[i].GetComponent<Image>().color = new Color(1f, 1f, 1f);
+		}
+
+		// 남은 체력은 회색 처리
+		for (int i = _curHp; i < _maxHp; i++)
+		{
+			hp[i].GetComponent<Image>().color = new Color(0.623f, 0.623f, 0.623f);
 		}
 	}
 }

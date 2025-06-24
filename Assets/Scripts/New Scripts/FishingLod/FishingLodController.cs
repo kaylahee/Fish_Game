@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class FishingLodController : MonoBehaviour
@@ -19,15 +20,42 @@ public class FishingLodController : MonoBehaviour
 
 	public GameObject caughtFish = null;
 
+	private GameObject gameManager;
+	private GameObject SwappingCam;
+	private GameObject sceneManager;
+
 	SpawnManager spawnManager;
 	DayAndNightCycle dayAndnightCycle;
 	GameSceneManager gameSceneManager;
 
 	void Start()
 	{
-		spawnManager = FindObjectOfType<SpawnManager>();
-		dayAndnightCycle = FindObjectOfType<DayAndNightCycle>();
-		gameSceneManager = FindObjectOfType<GameSceneManager>();
+		if (gameManager == null)
+		{
+			gameManager = GameObject.FindWithTag("GameManager");
+			if (gameManager != null)
+			{
+				spawnManager = gameManager.GetComponent<SpawnManager>();
+			}
+		}
+
+		if (SwappingCam == null)
+		{
+			SwappingCam = GameObject.FindWithTag("DayAndNight");
+			if (SwappingCam != null)
+			{
+				dayAndnightCycle = SwappingCam.GetComponent<DayAndNightCycle>();
+			}
+		}
+
+		if (sceneManager == null)
+		{
+			sceneManager = GameObject.FindWithTag("SceneManager");
+			if (sceneManager != null)
+			{
+				gameSceneManager = sceneManager.GetComponent<GameSceneManager>();
+			}
+		}
 	}
 
 	void Update()
@@ -73,7 +101,7 @@ public class FishingLodController : MonoBehaviour
 			}
 
 			if (Mathf.Abs(transform.position.y - 9f) <= 0.05f)
-			{
+			{ 
 				HandleCaughtFish();
 			}
 		}
@@ -83,10 +111,11 @@ public class FishingLodController : MonoBehaviour
 	{
 		// 만약 잡힌 물고기가 있다면
 		if (caughtFish != null)
-		{	
+		{
 			// 잡힌 물고기 = 플레이어
 			if (caughtFish.name.Contains("Player"))
 			{
+				Debug.Log(caughtFish.name);
 				AfterReturnLogic();
 				gameSceneManager.LoadScene("EndScene");
 				return;

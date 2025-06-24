@@ -6,22 +6,22 @@ public class InteractionController : MonoBehaviour
 {
 	private SpriteRenderer cur_player;
 
-	private bool isCaught = false;
+	[HideInInspector]
+	public bool isCaught = false;
 
 	PlayerController playerController;
 	EvolutionController evolutionController;
 	PlayerHPManager playerHPManager;
 	
 	EnemyController enemyController;
-
+		
 	private void Start()
 	{
 		playerController = GetComponentInParent<PlayerController>();
 		evolutionController = GetComponentInParent<EvolutionController>();
 		playerHPManager = GetComponentInParent<PlayerHPManager>();
 
-		cur_player = evolutionController.cur_player;
-
+		cur_player = GetComponent<SpriteRenderer>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -73,14 +73,16 @@ public class InteractionController : MonoBehaviour
 					}
 				}
 			}
+			
 			// 잠수부와 닿았을 경우
-			else if (collision.CompareTag("Swimmer"))
+			if (collision.CompareTag("Swimmer"))
 			{
 				playerHPManager._curHp = 0;
 				playerHPManager.UpdateHPStatus();
 			}
+			
 			// 쓰레기와 닿았을 경우
-			else if (collision.CompareTag("Trash"))
+			if (collision.CompareTag("Trash"))
 			{
 				ifMeetEnemy();
 			}
@@ -104,6 +106,7 @@ public class InteractionController : MonoBehaviour
 		int countTime = 0;
 		while (countTime < 10)
 		{
+			gameObject.GetComponent<CircleCollider2D>().enabled = false;
 			playerController.Movespeed = 1f;
 			if (countTime % 2 == 0)
 			{
@@ -118,8 +121,7 @@ public class InteractionController : MonoBehaviour
 			countTime++;
 		}
 		cur_player.color = new Color32(255, 255, 255, 255);
+		gameObject.GetComponent<CircleCollider2D>().enabled = true;
 		playerController.Movespeed = 3f;
-
-		yield return null;
 	}
 }

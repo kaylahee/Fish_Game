@@ -10,12 +10,13 @@ TagManager:
   - Level0
   - Sea
   - Feed
-  - FishingShort
-  - FishingLong
   - FishingLine
   - Hook
   - Trash
   - Swimmer
+  - SceneManager
+  - GameManager
+  - DayAndNight
   layers:
   - Default
   - TransparentFX

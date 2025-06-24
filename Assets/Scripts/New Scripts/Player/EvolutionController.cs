@@ -7,8 +7,6 @@ public class EvolutionController : MonoBehaviour
 {
 	[Header("현재 물고기")]
 	public GameObject fish;
-	[HideInInspector]
-	public SpriteRenderer cur_player;
 
 	[Header("진화에 따른 물고기 변화")]
 	public GameObject smallFish;
@@ -38,8 +36,6 @@ public class EvolutionController : MonoBehaviour
 
 	private void Start()
 	{
-		cur_player = fish.GetComponentInChildren<SpriteRenderer>();
-
 		playerController = GetComponent<PlayerController>();
 		spawnManager = gameManager.GetComponent<SpawnManager>();
 

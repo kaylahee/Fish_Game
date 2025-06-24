@@ -9,12 +9,6 @@ public class GameSceneManager : MonoBehaviour
 		SceneManager.LoadScene(sceneName);
 	}
 
-	public void LoadScene(string sceneName, int resultScore)
-	{
-		PlayerPrefs.SetInt("ResultScore", resultScore);
-		SceneManager.LoadScene(sceneName);
-	}
-
 	public void ReloadScene()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);

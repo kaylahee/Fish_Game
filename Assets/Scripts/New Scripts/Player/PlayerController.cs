@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 		// 잡힌 물고기가 아닌 경우
 		if (!gameObject.name.Contains("Caught"))
 		{
-			//MoveInArea();
+			MoveInArea();
 			Move();
 		}
 	}
@@ -95,21 +95,21 @@ public class PlayerController : MonoBehaviour
     }
 
 	// 움직일 수 있는 범위 내에서 움직이도록 설정
-	//private void MoveInArea()
-	//{
-	//	// 배경 경계선 안으로 움직이도록
-	//	Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
+	private void MoveInArea()
+	{
+		// 배경 경계선 안으로 움직이도록
+		Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
 
-	//	Vector4[] bounds = new Vector4[] {
-	//		new Vector4(0.03f, 0.97f, 0.2f, 0.95f), // playerstate 0
-	//		new Vector4(0.07f, 0.93f, 0.2f, 0.95f), // playerstate 1
-	//		new Vector4(0.11f, 0.89f, 0.22f, 0.95f) // playerstate 2
-	//	};
+		Vector4[] bounds = new Vector4[] {
+			new Vector4(0.03f, 0.97f, 0.2f, 0.95f), // playerstate 0
+			new Vector4(0.07f, 0.93f, 0.2f, 0.95f), // playerstate 1
+			new Vector4(0.11f, 0.89f, 0.22f, 0.95f) // playerstate 2
+		};
 
-	//	Vector4 b = bounds[playerstate];
-	//	position.x = Mathf.Clamp(position.x, b.x, b.y);
-	//	position.y = Mathf.Clamp(position.y, b.z, b.w);
+		Vector4 b = bounds[evolutionController.playerstate];
+		position.x = Mathf.Clamp(position.x, b.x, b.y);
+		position.y = Mathf.Clamp(position.y, b.z, b.w);
 
-	//	transform.position = Camera.main.ViewportToWorldPoint(position);
-	//}	
+		transform.position = Camera.main.ViewportToWorldPoint(position);
+	}
 }

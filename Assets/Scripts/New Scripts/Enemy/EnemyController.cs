@@ -10,12 +10,22 @@ public class EnemyController : MonoBehaviour
 	private Rigidbody2D rg;
 
 	public int enemyStage;
+
+	private GameObject gameManager;
 	SpawnManager spawnManager;
 
 	private void Start()
 	{
 		rg = GetComponent<Rigidbody2D>();
-		spawnManager = FindObjectOfType<SpawnManager>();
+
+		if (gameManager == null)
+		{
+			gameManager = GameObject.FindWithTag("GameManager");
+			if (gameManager != null)
+			{
+				spawnManager = gameManager.GetComponent<SpawnManager>();
+			}
+		}
 
 		Move();
 	}

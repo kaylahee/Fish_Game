@@ -37,7 +37,7 @@ public class SpawnManager : MonoBehaviour
 	[SerializeField]
 	private GameObject swimmer;
 	public int swimmerCount = 0;
-	public float SwimmerSpawnTime = 10f;
+	public float SwimmerSpawnTime = 7f;
 
 	[Header("쓰레기 관련")]
 	[SerializeField]
@@ -45,6 +45,8 @@ public class SpawnManager : MonoBehaviour
 	private bool isTrashSpawning = false;
 	public int trashCount = 0;
 	public float TrashSpawnTime = 6.5f;
+
+	private int prevPlayerState = -1;
 
 	public GameObject player;
 	public GameObject dayandnight;
@@ -76,7 +78,6 @@ public class SpawnManager : MonoBehaviour
 			StartCoroutine(SpawnFishingLine());
 		}
 
-		int prevPlayerState = evolutionController.playerstate;
 		// 플레이어가 2단계일때부터 3단계 먹이 스폰
 		if (prevPlayerState != 1 && evolutionController.playerstate == 1)
 		{
@@ -88,6 +89,8 @@ public class SpawnManager : MonoBehaviour
 		{
 			StartCoroutine(SpawnSwimmer());
 		}
+
+		prevPlayerState = evolutionController.playerstate;
 	}
 
 	// 겹치는 곳 없이 스폰되도록 구현
@@ -129,15 +132,29 @@ public class SpawnManager : MonoBehaviour
 			// 랜덤 먹이가 나올 수 있도록 설정
 			GameObject randomFeed = feed[UnityEngine.Random.Range(0, feed.Length)];
 
-			if (!dayAndNightCycle.isNight && randomFeed.name == "Monkfish")
-			{
-				randomFeed = feed[UnityEngine.Random.Range(1, feed.Length)];
-			}
-
 			if (randomFeed.name == "Monkfish")
 			{
-				randomY = UnityEngine.Random.Range(-3f, -1f);
-				spawnPosition = new Vector3(randomX, randomY, 0f);
+				if (dayAndNightCycle.isNight)
+				{
+					if (dayAndNightCycle.curTime < dayAndNightCycle.nightEarlyTime)
+					{
+						randomY = UnityEngine.Random.Range(-3f, -1f);
+						spawnPosition = new Vector3(randomX, randomY, 0f);
+					}
+					else if (dayAndNightCycle.curTime < dayAndNightCycle.nightLateTime)
+					{
+						randomY = UnityEngine.Random.Range(-3f, -1f);
+						spawnPosition = new Vector3(randomX, randomY, 0f);
+					}
+					else
+					{
+						randomFeed = feed[UnityEngine.Random.Range(1, feed.Length)];
+					}
+				}
+				else
+				{
+					randomFeed = feed[UnityEngine.Random.Range(1, feed.Length)];
+				}
 			}
 
 			float cur_scale_x = randomFeed.transform.localScale.x;
@@ -169,7 +186,6 @@ public class SpawnManager : MonoBehaviour
 
 		while (fishingLineCount < 3)
 		{
-			Debug.Log("Spawn fishingLine");
 			float randomX = UnityEngine.Random.Range(-7.5f, 7.5f);
 			float Y = 9f;
 
@@ -204,19 +220,14 @@ public class SpawnManager : MonoBehaviour
 	// 잠수부 스폰
 	private IEnumerator SpawnSwimmer()
 	{
+		yield return new WaitForSeconds(2f);
+
 		while (swimmerCount < 1)
 		{
-			float randomX = UnityEngine.Random.Range(0f, 1f) > 0.5f ? UnityEngine.Random.Range(-15f, -11f) : UnityEngine.Random.Range(11f, 15f);
+			float randomX = player.transform.position.x < 0f ? UnityEngine.Random.Range(-15f, -11f) : UnityEngine.Random.Range(11f, 15f);
 			float randomY = UnityEngine.Random.Range(-3f, 3f);
 
-			// 겹치지 않는 위치를 찾을 때까지 반복
 			Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
-			while (IsPositionOccupied(spawnPosition, 1f))  // 1f는 겹침을 확인할 반지름 값
-			{
-				randomX = UnityEngine.Random.Range(0f, 1f) > 0.5f ? UnityEngine.Random.Range(-15f, -11f) : UnityEngine.Random.Range(11f, 15f);
-				randomY = UnityEngine.Random.Range(-3f, 3f);
-				spawnPosition = new Vector3(randomX, randomY, 0f);
-			}
 
 			float cur_scale_x = swimmer.transform.localScale.x;
 			float cur_scale_y = swimmer.transform.localScale.y;

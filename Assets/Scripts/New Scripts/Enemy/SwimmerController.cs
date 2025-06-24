@@ -5,8 +5,6 @@ using UnityEngine.UIElements;
 public class SwimmerController : MonoBehaviour
 {
 	private Rigidbody2D rg;
-	private PlayerController playerController;
-	private SpawnManager spawnManager;
 
 	public float followSpeed = 2f;
 	public float followDuration = 5f;
@@ -17,11 +15,29 @@ public class SwimmerController : MonoBehaviour
 
 	private Vector2 previous;
 
+	private GameObject player;
+	private GameObject gameManager;
+
+	SpawnManager spawnManager;
+
 	private void Start()
 	{
 		rg = GetComponent<Rigidbody2D>();
-		playerController = FindObjectOfType<PlayerController>();
-		spawnManager = FindObjectOfType<SpawnManager>();
+
+		if (player == null)
+		{
+			player = GameObject.FindWithTag("Player");
+		}
+
+		if (gameManager == null)
+		{
+			gameManager = GameObject.FindWithTag("GameManager");
+			if (gameManager != null)
+			{
+				spawnManager = gameManager.GetComponent<SpawnManager>();
+			}
+		}
+
 		StartCoroutine(FollowPlayer());
 	}
 
@@ -33,29 +49,30 @@ public class SwimmerController : MonoBehaviour
 
 		while (elapsedTime < followDuration)
 		{
-			if (playerController != null)
+			if (player != null)
 			{
-				Vector3 direction = playerController.transform.position - transform.position;
-				transform.position += direction.normalized * followSpeed * Time.deltaTime;
+				Vector2 direction = player.transform.position - transform.position;
+				transform.position += (Vector3)(direction.normalized * followSpeed * Time.deltaTime);
 				tempDirection = direction.normalized * followSpeed;
 			}
 
 			elapsedTime += Time.deltaTime;
+			yield return null;
 		}
 
 		Move(tempDirection);
-		yield return null;
 	}
 
 	private void Move(Vector2 tempDirection)
 	{
 		rg.velocity = tempDirection;
 
-		// 플레이어가 오른쪽 혹은 왼쪽에 위치할 때
-		if (playerController.transform.position.x != transform.position.x)
+		// 잠수부는 왼쪽으로 돌아가야 함
+		float angle = transform.rotation.eulerAngles.y;
+
+		// 플레이어가 오른쪽에 위치할 때
+		if (player.transform.position.x > transform.position.x)
 		{
-			// 잠수부는 왼쪽으로 돌아가야 함
-			float angle = transform.rotation.eulerAngles.y;
 			transform.rotation = Quaternion.Euler(0, (angle + 180) % 360, 0);
 			rg.velocity = new Vector2(-1 * rg.velocity.x, rg.velocity.y);
 		}

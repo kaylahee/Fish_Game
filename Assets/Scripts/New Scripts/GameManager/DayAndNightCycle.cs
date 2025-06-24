@@ -19,6 +19,19 @@ public class DayAndNightCycle : MonoBehaviour
 	public bool isSwap = false;
 	public bool isNight = false;
 
+	// ¼³Á¤ ºñÀ²
+	[SerializeField] 
+	private float nightStartRatio = 0.3f;
+	[SerializeField] 
+	private float dayStartRatio = 0.9f;
+
+	private float nightStartTime;
+	private float nightEndTime;
+
+	public float nightEarlyTime;
+	public float nightLateTime;
+	private float nightMidTime;
+
 	private void Awake()
 	{
 		float spriteX = sr.sprite.bounds.size.x;
@@ -29,6 +42,17 @@ public class DayAndNightCycle : MonoBehaviour
 		transform.localScale = new Vector2(Mathf.Ceil(screenX / spriteX), Mathf.Ceil(screenY / spriteY));
 
 		sr.color = day;
+	}
+
+	private void Start()
+	{
+		nightStartTime = oneDay * nightStartRatio;
+		nightEndTime = oneDay * dayStartRatio;
+
+		float nightDuration = nightEndTime - nightStartTime;
+		nightEarlyTime = nightStartTime + nightDuration / 3f;
+		nightLateTime = nightEndTime - nightDuration / 3f;
+		nightMidTime = (nightStartTime + nightEndTime) / 2f;
 	}
 
 	private void Update()
@@ -44,13 +68,13 @@ public class DayAndNightCycle : MonoBehaviour
 		if (!isSwap)
 		{
 			// ³·->¹ã / ¹ã->³·
-			if (Mathf.FloorToInt(oneDay * 0.4f) == Mathf.FloorToInt(curTime))
+			if (Mathf.FloorToInt(oneDay * nightStartRatio) == Mathf.FloorToInt(curTime))
 			{
 				isNight = true;
-				isSwap = true;
+				isSwap = true;				
 				StartCoroutine(SwapColor(sr.color, night));
 			}
-			else if (Mathf.FloorToInt(oneDay * 0.9f) == Mathf.FloorToInt(curTime))
+			else if (Mathf.FloorToInt(oneDay * dayStartRatio) == Mathf.FloorToInt(curTime))
 			{
 				isNight = false;
 				isSwap = true;
